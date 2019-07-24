@@ -1,0 +1,1 @@
+Any items in this directory will be copied on install, rather than linked.  This allows for per-system configurations
