@@ -20,14 +20,6 @@ if [[ -e ~/.ssh/known_hosts ]]; then
   complete -o default -W "$(cat ~/.ssh/known_hosts | sed 's/[, ].*//' | sort | uniq | grep -v '[0-9]')" ssh scp sftp
 fi
 
-# Disable ansible cows }:]
-export ANSIBLE_NOCOWS=1
-
-# "fuck"
-if [[ "$(which thefuck)" ]]; then
-  eval $(thefuck --alias)
-fi
-
 # Run a command repeatedly in a loop, with a delay (defaults to 1 sec).
 # Usage:
 #   loop [delay] single_command [args]
