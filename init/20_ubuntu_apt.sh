@@ -42,15 +42,15 @@ apt_packages+=(
 
 
   # Misc
-  apt_packages+=(adb fastboot)
   apt_packages+=(
     openssh-server
     vlc
   )
 
 
-function other_stuff() {
-}
+#function other_stuff() {
+ 
+#}
 
 ####################
 # ACTUALLY DO THINGS
