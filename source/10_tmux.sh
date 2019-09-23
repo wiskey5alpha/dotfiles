@@ -19,8 +19,10 @@ function tm() {
 # started (and possibly detached) in this shell.
 if shopt -q login_shell && [[ ! "$TMUX_AUTO_STARTED" ]]; then
   TMUX_AUTO_STARTED=1
-  # tm SOURCE
+  tm SOURCE
 fi
+
+test -z ${TMUX} && tmux
 
 # Run an arbitrary command in the current tmux window (if only one pane)
 # otherwise create a new window and run the command there.
