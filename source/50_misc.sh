@@ -5,9 +5,11 @@ shopt -s nocaseglob
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+alias cls='clear'
 alias grep='grep --color=auto'
 
 # Prevent less from clearing the screen while still showing colors.
+export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 export LESS=-XR
 
 # Set the terminal's title bar.
