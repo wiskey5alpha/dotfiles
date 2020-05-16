@@ -49,6 +49,31 @@
                          ("DONE" :foreground "olive drab" :weight bold)
    )))
    #+END_SRC
+** org stuck-projects
+   first, a project is loosely defined as an item that is:
+   - A TODO item
+   - not on the "someday maybe" list
+   - not waiting for something else
+   - not explicitly set to ignore
+   - not in review
+   - not scheduled
+   Next
+   - if it has a TODO item its not stuck (the lower one may be though)
+   - if it has a NEXT item its not stuck
+   #+BEGIN_SRC emacs-lisp
+   (setq org-stuck-projects
+   '(
+      ;; the tags-todo search that identifies projects
+      "-someday-wait-IGNORE-REVIEW/TODO"
+      ;; if these TODO words are found, it is not stuck
+      ("NEXT")
+      ;; if these tags are found in the subitems, it is not stuck
+      nil
+      ;; a regular expression that matches non stuck
+      ""
+     )
+    )
+   #+END_SRC
 ** org tags
    Tags are used for two major functions; filtering and searching
    #+BEGIN_SRC emacs-lisp
@@ -60,21 +85,21 @@
 
    (setq org-tag-alist '(
     ;;   Next Action Contexts
-         ("email"    .   ?m)
-         ("phone"    .   ?p)
-         ("laptop"   .   ?l)
+         ("comms"    .   ?c)
          ("web"      .   ?w)
-         ("cac"      .   ?c)
+         ("cac"      .   ?a)
          ("office"   .   ?o)
          ("home"     .   ?h)
-         ("errand"   .   ?e)
+         ("mcen"     .   ?m)
          ("vault"    .   ?v)
-         ("anywhere" .   ?a)
-         ;;   Markers
-         ("someday"  .   ?S)
+         ("imefdm"   .   ?i)
+    ;;   Meetings and People
+         ("staff"    .   ?t)
+         ("spe"      .   ?p)
+         ("col"      .   ?C)
+    ;;   Categories and flags
+         ("someday"  .   ?s)
          ("wait"     .   ?W)
-         ;;   other categories
-         ("support"  .   ?P)
          ("read"     .   ?r)
          ("fifo"     .   ?f)
          ("journal"  .   ?j)
@@ -87,6 +112,7 @@
          "someday"
          "wait"
          "fifo"
+         "journal"
          ))
 
 
@@ -169,386 +195,15 @@
    (rebuild-agenda-files)
    #+END_SRC
 ** Agenda views
-*** Views preamble
-    #+BEGIN_SRC emacs-lisp
-    (setq org-agenda-custom-commands
-       '(
-    #+END_SRC
-*** Main Agenda
-**** Main agenda preamble
-    #+BEGIN_SRC emacs-lisp
-    ("A" "@Agenda"
-     (
-    #+END_SRC
-**** Deadlines this week
-     #+BEGIN_SRC emacs-lisp
-     ( agenda ""
-      (
-       (org-agenda-overriding-header "Upcoming deadlines this week")
-       (org-agenda-ndays 7)
-       (org-deadline-warning-days 0)
-       (org-agenda-start-on-weekday nil)
-       (org-agenda-show-all-dates nil)
-       (org-agenda-entry-types '(:deadline))
-       (org-agenda-skip-deadline-if-done t)
-       (org-agenda-warning-days 0)
-      )
-     )
-     #+END_SRC
-**** Scheduled this week
-     #+BEGIN_SRC emacs-lisp
-     ( agenda ""
-      (
-       (org-agenda-overriding-header "Items scheduled this week")
-       (org-agenda-ndays 7)
-       (org-agenda-start-on-weekday nil)
-       (org-agenda-show-all-dates nil)
-       (org-agenda-entry-types '(:scheduled))
-       (org-habit-show-habits-only-for-today nil)
-      )
-     )
-     #+END_SRC
-**** 1 Week Overview
-     #+BEGIN_SRC emacs-lisp
-     ( agenda ""
-      (
-       (org-agenda-overriding-header "One week overview")
-       (org-agenda-ndays 7)
-       (org-agenda-start-on-weekday nil)
-       (org-agenda-repeating-timestamp-show-all t)
-       (org-agenda-entry-types '(:deadline :scheduled :timestamp :sexp))
-       (org-deadline-warning-days 0)
-      )
-     )
-     #+END_SRC
-**** Close Main Agenda
-     #+BEGIN_SRC emacs-lisp
-     )
-     #+END_SRC
-**** Setup for printing
-     #+BEGIN_SRC emacs-lisp
-     (
-      (org-agenda-with-colors t)
-      (ps-print-color-p 'black-white)
-     )
-      ("~/paperPlanner/Agenda-Export/Page-01.CalendarForOneWeek.ps")
-**** main agenda postfix
-     #+BEGIN_SRC emacs-lisp
-     )
-     )
-     #+END_SRC
-*** Next action lists
-**** Next Action list preamble
-     #+BEGIN_SRC emacs-lisp
-          ("N" . "Next Action Lists")
-     #+END_SRC
-**** By effort
-     #+BEGIN_SRC emacs-lisp
-     ("Ne" "@Next Actions By Effort"
-      (
-       (tags-todo "+Effort>=\"0:01\"+Effort<=\"0:15\"/NEXT"
-        (
-         (org-agenda-overriding-header "15 minutes or less")
-         (org-agenda-tags-todo-honor-ignore-options t)
-         (org-agenda-todo-ignore-scheduled '(future))
-        )
-       )
-       ( tags-todo "+Effort>\"0:15\"+Effort<=\"0:30\"/NEXT"
-        (
-         (org-agenda-overriding-header "30 minutes or less")
-         (org-agenda-tags-todo-honor-ignore-options t)
-         (org-agenda-todo-ignore-scheduled '(future))
-        )
-       )
-       ( tags-todo "+Effort>\"0:30\"/NEXT"
-        (
-         (org-agenda-overriding-header "over 30 minutes")
-         (org-agenda-tags-todo-honor-ignore-options t)
-         (org-agenda-todo-ignore-scheduled '(future))
-        )
-       )
-       (
-        (org-agenda-with-colors t)
-        (ps-print-color-p 'black-white)
-       )
-       ("~/paperPlanner/Agenda-Export/Page-02.AllNextActions.ps")
-      )
-     )
-      #+END_SRC
-**** By Context
-     #+BEGIN_SRC emacs-lisp
-     ("Nn" "@Next Actions by context"
-      (
-       (tags-todo "+errand-someday/NEXT"
-        (
-         (org-agenda-overriding-header "@Errand")
-         (org-agenda-tags-todo-honor-ignore-options t)
-         (org-agenda-todo-ignore-scheduled '(future))
-        )
-       )
-       (tags-todo "+email-someday/NEXT"
-        (
-         (org-agenda-overriding-header "@EMail")
-         (org-agenda-tags-todo-honor-ignore-options t)
-         (org-agenda-todo-ignore-scheduled '(future))
-        )
-       )
-       (tags-todo "+phone-someday/NEXT"
-        (
-         (org-agenda-overriding-header "@Phone")
-         (org-agenda-tags-todo-honor-ignore-options t)
-         (org-agenda-todo-ignore-scheduled '(future))
-        )
-       )
-       (tags-todo "+web-someday/NEXT"
-        (
-         (org-agenda-overriding-header "@Online")
-         (org-agenda-tags-todo-honor-ignore-options t)
-         (org-agenda-todo-ignore-scheduled '(future))
-        )
-       )
-       (tags-todo "+cac-someday/NEXT"
-        (
-         (org-agenda-overriding-header "@PKI")
-         (org-agenda-tags-todo-honor-ignore-options t)
-         (org-agenda-todo-ignore-scheduled '(future))
-        )
-       )
-       (tags-todo "+office-someday/NEXT"
-        (
-         (org-agenda-overriding-header "@Office")
-         (org-agenda-tags-todo-honor-ignore-options t)
-         (org-agenda-todo-ignore-scheduled '(future))
-        )
-       )
-       (tags-todo "+home-someday/NEXT"
-        (
-         (org-agenda-overriding-header "@Home")
-         (org-agenda-tags-todo-honor-ignore-options t)
-         (org-agenda-todo-ignore-scheduled '(future))
-        )
-       )
-       (tags-todo "+laptop-someday/NEXT"
-        (
-         (org-agenda-overriding-header "@Laptop")
-         (org-agenda-tags-todo-honor-ignore-options t)
-         (org-agenda-todo-ignore-scheduled '(future))
-        )
-       )
-       (tags-todo "+anywhere-someday/NEXT"
-        (
-         (org-agenda-overriding-header "@Anywhere")
-         (org-agenda-tags-todo-honor-ignore-options t)
-         (org-agenda-todo-ignore-scheduled '(future))
-        )
-       )
-       (tags-todo "+vault-someday/NEXT"
-        (
-         (org-agenda-overriding-header "@Vault")
-         (org-agenda-tags-todo-honor-ignore-options t)
-         (org-agenda-todo-ignore-scheduled '(future))
-        )
-       )
-       (tags-todo "-CATEGORY=\"Someday\"-CATEGORY=\"REVIEW\"+TAGS=\"\"/NEXT"
-        (
-         (org-agenda-overriding-header "@Uncategorized")
-         (org-agenda-tags-todo-honor-ignore-options t)
-         (org-agenda-todo-ignore-scheduled '(future))
-        )
-       )
-      )
-      (
-       (org-agenda-with-colors t)
-       (ps-print-color-p 'black-white)
-      )
-      ("~/paperPlanner/Agenda-Export/Page-02.AllNextActions.ps")
-     #+END_SRC
-**** Next Action postfix
-     #+BEGIN_SRC emacs-lisp
-     )
-     )
-     #+END_SRC
-*** All uncategorized next actions
-     #+BEGIN_SRC emacs-lisp
-     ("u" "@Uncategorized Next Actions" tags-todo "-CATEGORY=\"Someday\"-CATEGORY=\"REVIEW\"+TAGS=\"\"/NEXT"
-      (
-       (org-agenda-overriding-header "@Uncategorized Next Actions")
-       (org-agenda-todo-keyword-format "")
-       (org-agenda-prefix-format "%b\n%i %-12c:")
-       (org-agenda-tags-todo-honor-ignore-options t)
-       (org-agenda-todo-ignore-scheduled '(future))
-      )
-      (
-       (org-agenda-with-colors t)
-       (ps-print-color-p 'black-white)
-      )
-      ("~/paperPlanner/Agenda-Export/Page-03.UncategorizedNextActions.ps")
-     )
-     #+END_SRC
-*** Project List
-    #+BEGIN_SRC emacs-lisp
-    ("p" "@Projects" tags-todo "-IGNORE-someday-wait/TODO"
-     (
-      (org-agenda-overriding-header "@Projects")
-      (org-agenda-tags-todo-honor-ignore-options t)
-      (org-tags-match-list-sublevels nil)
-      (org-agenda-skip-function 'bh/skip-stuck-projects
-     )
-    )
-    (
-     (org-agenda-with-colors t)
-     (ps-print-color-p 'black-white)
-    )
-    ("~/paperPlanner/Agenda-Export/Page-05.ProjectList.ps")
-   )
+   #+BEGIN_SRC emacs-lisp
+   (setq org-agenda-custom-commands
+      '(("s" "Stuck Projects"
+          ((org-ql-block '(and (not (done))
+                               (not (descendants (todo "NEXT")))
+                               (not (descendants (todo "TODO")))
+                               (not (descendants (scheduled))))
+                         ((org-ql-block-header "Stuck Projects")))))))
    #+END_SRC
-*** Someday-maybe
-    #+BEGIN_SRC emacs-lisp
-    ("S" "@Someday/Maybe" tags-todo "+someday/TODO"
-     (
-      (org-agenda-overriding-header "Someday/Maybe")
-      (org-agenda-prefix-format " - ")
-      (org-agenda-todo-keyword-format "")
-     )
-     (
-      (org-agenda-with-colors t)
-      (ps-print-color-p 'black-white)
-     )
-     ("~/paperPlanner/Agenda-Export/Page-06.SomedayMaybeList.ps")
-    )
-    #+END_SRC
-*** Review
-**** Review preamble
-    #+BEGIN_SRC emacs-lisp
-    ("R" . "@Review Commands")
-    #+END_SRC
-**** Marked for review
-     #+BEGIN_SRC emacs-lisp
-     ("Ro" "@Review"
-      (
-       (tags-todo "REVIEW"
-        (
-         (org-agenda-skip-function  '(org-agenda-skip-entry-if 'scheduled))
-         (org-agenda-overriding-header "Tasks Marked for Review")
-         ;don't list sub levels, just the one we marked
-         (org-tags-match-list-sublevels nil)
-         (org-agenda-sorting-strategy '(category-up))
-        )
-       )
-       (tags "journal+REVIEW"
-        (
-         (org-agenda-overriding-header "Journal entries marked for Review")
-        )
-       )
-         ;; total hack to exclude all todo's
-       (tags "CATEGORY=\"REVIEW\"-TODO={[[:upper:]]+}|REVIEW-journal-TODO={[[:upper:]]+}"
-        (
-         (org-agenda-overriding-header "Notes Marked for Review")
-        )
-       )
-       (stuck "")
-      )
-      (
-       (org-agenda-with-colors t)
-       (ps-print-color-p 'black-white)
-      )
-      ("~/paperPlanner/Agenda-Export/Page-07.TheReview.ps")
-     )
-     #+END_SRC
-**** Actions that need planning
-     #+BEGIN_SRC emacs-lisp
-     ("Rp" tags-todo "-someday+Effort=\"\"/NEXT"
-      (
-       (org-agenda-overriding-header "Actions that need planning")
-       (org-agenda-view-columns-initially t)
-      )
-     )
-     #+END_SRC
-*** Waiting For
-    #+BEGIN_SRC emacs-lisp
-    ("w" "@waiting" todo "WAIT"
-     (
-      (org-agenda-overriding-header "Waiting For")
-     )
-     (
-      (org-agenda-with-colors t)
-      (ps-print-color-p 'black-white)
-     )
-     ("~/paperPlanner/Agenda-Export/Page-08.WaitingFor.ps")
-    )
-    #+END_SRC
-*** Lists
-    #+BEGIN_SRC emacs-lisp
-    ("l" "@Lists" tags "list"
-     (
-      (org-agenda-overriding-header "@Lists")
-     )
-     (
-      (org-tags-match-list-sublevels nil)
-      (org-agenda-with-colors t)
-      (ps-print-color-p 'black-white)
-     )
-     ("~/paperPlanner/Agenda-Export/Page-09.ListOfLists.ps")
-    )
-    #+END_SRC
-*** The FIFO Queue
-    #+BEGIN_SRC emacs-lisp
-    ("f" "The FIFO Queue" tags "fifo"
-     (
-      (org-agenda-overriding-header "The FIFO Queue")
-     )
-     (
-      (org-tags-match-list-sublevels nil)
-      (org-agenda-with-colors t)
-      (ps-print-color-p 'black-white)
-     )
-     ("~/paperPlanner/Agenda-Export/Page-09.ListOfLists.ps")
-    )
-    #+END_SRC
-*** Next time im connected
-    ("y" "Next time im connected" tags "laptop+web-someday"
-     (
-      (org-agenda-overriding-header "While Connected")
-     )
-    )
-
-*** The ticket queue
-**** Ticket Queue preamble
-    #+BEGIN_SRC emacs-lisp
-    ( "k" . "Tickets")
-    #+END_SRC
-**** Ticket Inbox
-     #+BEGIN_SRC emacs-lisp
-     ( "ki" "Ticket Inbox" tags "ticket/NEW"
-      (
-       (org-agenda-files '("~/org/tickets.org"))
-       (org-agenda-overriding-header "Ticket Inbox")
-      )
-     )
-     #+END_SRC
-**** Ticket work queue
-     #+BEGIN_SRC emacs-lisp
-     ( "kw" "Ticket work queue" tags "ticket/BUG|TASK|FEAT"
-      (
-       (org-agenda-files '("~/org/tickets.org"))
-       (org-agenda-overriding-header "Ticket work queue")
-      )
-     )
-     #+END_SRC
-*** Custom queries
-    #+BEGIN_SRC emacs-lisp
-    ("Q" . "Custom queries")
-     ("Qa" "Archive search" search ""
-      (
-       (org-agenda-files '(file-expand-wildcards "~/org/.archive/*.org"))
-      )
-     )
-     #+END_SRC
-*** Views postfix
-    #+BEGIN_SRC emacs-lisp
-    ) ;; close inner agenda view group
-    ) ;; close setq
-    #+END_SRC
 ** archive settings
    I organized all of the archived org items under a date tree, but
    preserve the original file name
