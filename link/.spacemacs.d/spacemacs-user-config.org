@@ -166,43 +166,51 @@
    =org-agenda-files= list we need to adjust that to include
    the Reference folder as well
    #+BEGIN_SRC emacs-lisp
-   ; set the default directory for some org functionality
-   (setq org-directory "~/org")
-   (setq org-agenda-files (file-expand-wildcards "~/org/*.org"))
-   (setq org-refile-allow-creating-parent-nodes 'confirm)
-
-
-   (defun rebuild-agenda-files ()
-     (interactive)
-     (load-library "find-lisp")
-     (setq org-agenda-files (directory-files "~/org" t "\.org$"))
-     (setq org-agenda-text-search-extra-files
-           (append
-            (find-lisp-find-files "~/org/notes"     "\.org$")
-            )
-           )
-     (setq tra:all-org-files
-           (append
-            org-agenda-files
-            org-agenda-text-search-extra-files)
-           )
-     (setq org-refile-targets
-           (quote ((nil :maxlevel . 5)
-                   (tra:all-org-files :maxlevel . 5)
-           ))
+     ; set the default directory for some org functionality
+     (setq org-directory "~/org")
+     (setq org-agenda-files (file-expand-wildcards "~/org/*.org"))
+     (setq org-agenda-text-search-extra-files (file-expand-wildcards "~/org/notes/*.org"))
+     (setq tra:all-org-files ( append
+           org-agenda-files
+           org-agenda-text-search-extra-files)
      )
-   )
-   (rebuild-agenda-files)
    #+END_SRC
+** Refile targets
+   #+BEGIN_SRC emacs-lisp
+   (setq org-refile-targets
+       (quote ((nil :maxlevel . 5)
+           (tra:all-org-files :maxlevel . 5)
+       ))
+   )
+   (setq org-refile-use-outline-path 'file)
+   (setq org-outline-path-complete-in-steps nil)
+   (setq org-refile-allow-creating-parent-nodes 'confirm)
+   #+END_SRC
+
 ** Agenda views
    #+BEGIN_SRC emacs-lisp
-   (setq org-agenda-custom-commands
-      '(("s" "Stuck Projects"
-          ((org-ql-block '(and (not (done))
-                               (not (descendants (todo "NEXT")))
-                               (not (descendants (todo "TODO")))
-                               (not (descendants (scheduled))))
-                         ((org-ql-block-header "Stuck Projects")))))))
+     (setq org-agenda-skip-scheduled-if-done 't)
+     (setq org-log-into-drawer 't)
+   #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (setq org-agenda-custom-commands
+        '(
+           ("s" "Stuck Projects"
+            (
+             (org-ql-block '(and
+                             (todo "TODO")
+                             (not (tags "wait" "someday"))
+                             (not (scheduled))
+                             (not (descendants (todo "NEXT")))
+                             (not (descendants (todo "TODO")))
+                             (not (descendants (scheduled)))
+                            )
+                           ((org-ql-block-header "Stuck Projects"))
+                           )
+             )
+            )
+           )
+        )
    #+END_SRC
 ** archive settings
    I organized all of the archived org items under a date tree, but
