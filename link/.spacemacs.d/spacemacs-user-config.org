@@ -185,6 +185,7 @@
    (setq org-refile-use-outline-path 'file)
    (setq org-outline-path-complete-in-steps nil)
    (setq org-refile-allow-creating-parent-nodes 'confirm)
+   (setq org-completion-use-ido t)
    #+END_SRC
 
 ** Agenda views
@@ -261,31 +262,11 @@
         )
       )
    #+END_SRC
-** org-babel
-    #+BEGIN_SRC emacs-lisp
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '(;; other Babel languages
-        (plantuml . t)
-        (python . t)
-         ))
-    #+END_SRC
-
-    Next, enable emacs to find the plantuml jar
-    #+BEGIN_SRC emacs-lisp
-    (setq plantuml-jar-path "/usr/local/bin/plantuml")
-    (setq org-plantuml-jar-path
-      (expand-file-name "/usr/local/bin/plantuml"))
-    #+END_SRC
-
-** org-refile-targets
-   this is the list of files that we can refile a note into
+** Turn on alerts based on the agenda schedule
    #+BEGIN_SRC emacs-lisp
-   (setq org-completion-use-ido t)
-   (setq org-refile-targets
-    (quote ((org-agenda-files :maxlevel . 7)
-                         (nil :maxlevel . 7))))
-   (setq org-refile-use-outline-path (quote file))
+     (require 'org-alert)
+     (setq alert-default-style 'libnotify)
+     (org-agenda-enable)
    #+END_SRC
 ** postfix
    Need to close the preamble
