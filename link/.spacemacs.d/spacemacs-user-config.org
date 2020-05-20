@@ -25,12 +25,6 @@
   (setq deft-auto-save-interval 30)
   #+END_SRC
 * org-mode
-** preamble
-   Because org-mode is bundled with emacs and spacemacs also maintains a
-   version, we need to add an eval so that we use the spacemacs package
-   #+BEGIN_SRC emacs-lisp
-   ;;(with-eval-after-load 'org
-   #+END_SRC
 ** org mode hooks
    things to enable based on the file type
    #+BEGIN_SRC emacs-lisp
@@ -175,6 +169,19 @@
            org-agenda-text-search-extra-files)
      )
    #+END_SRC
+   I want to be able to reload the list of refile targets if i add files
+   #+BEGIN_SRC emacs-lisp
+     (defun rebuild-agenda-files ()
+         (interactive)
+         (setq org-agenda-files (file-expand-wildcards "~/org/*.org"))
+         (setq org-agenda-text-search-extra-files (file-expand-wildcards "~/org/notes/*.org"))
+         (setq tra:all-org-files ( append
+               org-agenda-files
+               org-agenda-text-search-extra-files)
+               )
+     )
+   #+END_SRC
+
 ** Refile targets
    #+BEGIN_SRC emacs-lisp
    (setq org-refile-targets
@@ -268,11 +275,6 @@
      (setq alert-default-style 'libnotify)
      (org-agenda-enable)
    #+END_SRC
-** postfix
-   Need to close the preamble
-   #+BEGIN_SRC emacs-lisp
-   ;;)
-   #+END_SRC
 * user functions
   user function for opening the review file
   #+BEGIN_SRC emacs-lisp
@@ -281,18 +283,12 @@
     (find-file "~/org/review.org")
     )
   #+END_SRC
-* browser integration
-  #+BEGIN_SRC emacs-lisp
-  (setq browse-url-browser-function 'browse-url-generic
-        browse-url-generic-program "google-chrome")
-  #+END_SRC
 
-* trac wiki
-  A mode for editing the wiki pages on the trac server
   #+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'tracwiki-mode
-  (tracwiki-define-project "ForwardObserver"
-                            "http://trac.timforge.net/ForwardObserver" t))
+  (defun gtd ()
+     (interactive)
+     (find-file "~/org/planner.org)
+     )
   #+END_SRC
 * cc-mode
   the following section sets up my preferred formatting style
