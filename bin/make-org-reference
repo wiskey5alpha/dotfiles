@@ -1,0 +1,23 @@
+#!/bin/bash
+
+ORG_DIR=~/org
+TEMPLATE_DIR=~/org/.templates
+REFERENCE_DIR=~/org/notes
+REF_TEMPLATE=default_reference_header.org
+REF_PREFIX=refx-
+REF_EXT=.org
+
+################################################################################
+REF_FILE="$REFERENCE_DIR/$REF_PREFIX$1$REF_EXT"
+
+if [ $# -eq 0 ]; then
+    echo "Please provide a reference topic"
+    exit 1
+fi
+
+if [ -f $REF_FILE ]; then
+    echo "$REF_FILE already exists"
+    exit 1
+fi
+
+cp "$TEMPLATE_DIR/$REF_TEMPLATE" "$REF_FILE"
