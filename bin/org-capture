@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [[ $@ ]]
+then
+    data="$@"
+else
+    data=$(cat)
+fi
+
+if [[ -z $data ]]
+then
+    exit 1
+fi
+
+encoded=$(python -c "import sys, urllib; print urllib.quote(' '.join(sys.argv[1:]), safe='')" "${data[@]}")
+
+# "link" and "title" are not used, but seem to be necessary to get
+# $encoded to be captured
+emacsclient "org-protocol://capture://link/title/$encoded"
