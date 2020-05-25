@@ -29,22 +29,11 @@ apt_packages+=(
   git-core
   python-pip
   tree
-  vim-gnome
 )
-
-  # http://askubuntu.com/a/190674
-  add_ppa ppa:webupd8team/java
-  apt_packages+=(oracle-java8-installer)
-  function preinstall_oracle-java8-installer() {
-    echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
-    echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-  }
-
 
   # Misc
   apt_packages+=(
     openssh-server
-    vlc
   )
 
 
