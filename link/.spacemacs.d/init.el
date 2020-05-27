@@ -325,6 +325,18 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (org-babel-load-file "~/.spacemacs.d/spacemacs-user-config.org")
 )
+;; my custom functions
+(defun review ()
+  (interactive)
+  (find-file "~/org/review.org")
+  )
+
+(defun gtd ()
+  (interactive)
+  (find-file "~/org/planner.org")
+  )
+
+
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 (custom-set-variables

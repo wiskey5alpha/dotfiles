@@ -296,17 +296,9 @@
 * user functions
   user function for opening the review file
   #+BEGIN_SRC emacs-lisp
-  (defun review ()
-    (interactive)
-    (find-file "~/org/review.org")
-    )
   #+END_SRC
 
   #+BEGIN_SRC emacs-lisp
-  (defun gtd ()
-     (interactive)
-     (find-file "~/org/planner.org")
-     )
   #+END_SRC
 * cc-mode
   the following section sets up my preferred formatting style
