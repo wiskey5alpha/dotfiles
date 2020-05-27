@@ -66,9 +66,10 @@ local net_widgets         = require("net_widgets")
 
 local cw = calendar_widget ({
     theme = 'zenburn',
-    placement = 'top_right'
+    placement = 'bottom_right'
 })
-net_wireless = net_widgets.wireless({interface="wlo1"})
+net_wireless = net_widgets.wireless({interface="wlo1",
+                                     popup_position = "bottom_right"})
 net_wired    = net_widgets.indicator({interfaces = {"enp0s25"}})
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
