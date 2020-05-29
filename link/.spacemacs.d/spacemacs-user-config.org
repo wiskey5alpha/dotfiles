@@ -222,7 +222,7 @@
             (
              (org-ql-block '(and
                              (todo "TODO")
-                             (not (tags "wait" "someday"))
+                             (not (tags "wait" "someday" "calendar"))
                              (not (scheduled))
                              (not (descendants (todo "NEXT")))
                              (not (descendants (todo "TODO")))
@@ -240,8 +240,38 @@
                              (not (scheduled))
                              (children (todo "NEXT"))
                              )
-                           ((org-gl-block-header "The Project List"))
+                           ((org-ql-block-header "The Project List"))
               )
+             )
+            )
+           ("n" "Next Actions"
+            (
+             (org-ql-block '(and
+                             (todo "NEXT")
+                             (tags "comms")
+                             (not (tags "wait" "someday"))
+                             (not (scheduled))
+                             )
+                           ((org-ql-block-header "Communications"))
+                           )
+             (org-ql-block '(and
+                             (todo "NEXT")
+                             (tags "web")
+                             (not (tags "wait" "someday"))
+                             (not (scheduled))
+                             )
+                           ((org-ql-block-header "Web"))
+                           )
+             ))
+           ("w" "Waiting For"
+            (
+             (org-ql-block '(and
+                             (tags "wait")
+                             (not (tags "someday"))
+                             (not (scheduled))
+                             )
+                           ((org-ql-block-header "Waiting For"))
+                           )
              )
             )
            )
