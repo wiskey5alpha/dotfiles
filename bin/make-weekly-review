@@ -1,0 +1,19 @@
+#!/bin/bash
+
+ORG_DIR=~/org
+TEMPLATE_DIR=~/org/.templates
+REVIEW_DIR=~/org/review
+REV_TEMPLATE=weekly-review.org
+REV_PREFIX=wrev-
+REV_EXT=.org
+TODAY=$(date --iso-8601)
+
+################################################################################
+REV_FILE="$REVIEW_DIR/$REV_PREFIX$TODAY$REV_EXT"
+
+if [ -f $REV_FILE ]; then
+    echo "$REV_FILE already exists"
+    exit 1
+fi
+
+cp "$TEMPLATE_DIR/$REV_TEMPLATE" "$REV_FILE"
