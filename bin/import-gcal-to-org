@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+
+import subprocess
+import os
+
+class OrgFileWriter():
+    def __init__(self , url, ics, template, org ):
+        self.converterScript = "~/bin/ical2org.rb"
+        self.calendarUrl     = url
+        self.icsFile         = ics
+        self.templateFile    = template
+        self.orgFile         = org
+
+    def getICS(self):
+        cmd = " ".join(["wget -O", self.icsFile, self.calendarUrl] )
+        print cmd
+        output = subprocess.check_output(cmd , shell=True)
+
+    def write(self):
+        self.getICS()
+        cmd = " ".join([self.converterScript ,
+                        "<" , self.icsFile ,
+                        "|", "cat" , self.templateFile, "-",
+                        ">" , self.orgFile ])
+        output = subprocess.check_output( cmd , shell=True)
+        print cmd
+
+calendars = {
+    "google-calendar" : "https://www.google.com/calendar/ical/wiskey5alpha%40gmail.com/private-ef46f33a6e3b91500f6c534a8137db1a/basic.ics" ,
+#    "google-cnoec" : "https://www.google.com/calendar/ical/i78f9clftn5ikkmvruu9jls3ak%40group.calendar.google.com/private-722ac72228db02963a32aa5bb31ffe29/basic.ics" ,
+    "google-cnoec" : "https://www.google.com/calendar/ical/vqa97admdo1jn3jut5s39eq6io%40group.calendar.google.com/private-2fe88277effb92bcf47583ccd4335468/basic.ics",
+    "google-family" : "https://www.google.com/calendar/ical/tb.aldrich%40gmail.com/private-de72943e90781a9543d31ff82c7d978b/basic.ics"
+}
+
+for name , url in calendars.items():
+    icsFile = "/tmp/" + name + ".ics"
+    orgFile = "/home/aldrichtr/org/" + name + ".org"
+    template = "/home/aldrichtr/org/.templates/calendar-" + name + ".org"
+    try:
+        os.remove( icsFile )
+        os.remove( orgFile )
+    except OSError:
+        pass
+
+    w = OrgFileWriter( url, icsFile, template, orgFile )
+    w.write()
