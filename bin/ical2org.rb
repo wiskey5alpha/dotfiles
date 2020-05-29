@@ -34,7 +34,7 @@ require 'erb'
 require 'ri_cal'
 
 # e.g. output will be suppressed if default is specified
-DEFAULT_TZ = 'America/New_York'
+DEFAULT_TZ = 'America/Los_Angeles'
 
 # see the RiCal docs if Timezones don't work out for you
 ::RiCal::PropertyValue::DateTime::default_tzid = DEFAULT_TZ # :floating

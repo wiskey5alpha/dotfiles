@@ -5,7 +5,7 @@ import os
 
 class OrgFileWriter():
     def __init__(self , url, ics, template, org ):
-        self.converterScript = "~/bin/ical2org.rb"
+        self.converterScript = "~/.dotfiles/bin/ical2org.rb"
         self.calendarUrl     = url
         self.icsFile         = ics
         self.templateFile    = template
@@ -27,8 +27,6 @@ class OrgFileWriter():
 
 calendars = {
     "google-calendar" : "https://www.google.com/calendar/ical/wiskey5alpha%40gmail.com/private-ef46f33a6e3b91500f6c534a8137db1a/basic.ics" ,
-#    "google-cnoec" : "https://www.google.com/calendar/ical/i78f9clftn5ikkmvruu9jls3ak%40group.calendar.google.com/private-722ac72228db02963a32aa5bb31ffe29/basic.ics" ,
-    "google-cnoec" : "https://www.google.com/calendar/ical/vqa97admdo1jn3jut5s39eq6io%40group.calendar.google.com/private-2fe88277effb92bcf47583ccd4335468/basic.ics",
     "google-family" : "https://www.google.com/calendar/ical/tb.aldrich%40gmail.com/private-de72943e90781a9543d31ff82c7d978b/basic.ics"
 }
 
