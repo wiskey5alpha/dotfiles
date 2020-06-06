@@ -48,6 +48,16 @@
                          ("DONE" :foreground "olive drab" :weight bold)
    )))
    #+END_SRC
+   Ensure that TODOs don't get marked as DONE while child items are open even if
+   its checkboxes
+   #+BEGIN_SRC emacs-lisp
+     (setq org-enforce-todo-dependencies t)
+     (setq org-enforce-todo-checkbox-dependencies t)
+   #+END_SRC
+** org habits
+   #+BEGIN_SRC emacs-lisp
+   (setq org-habit-show-habits-only-for-today nil)
+   #+END_SRC
 ** org effort estimates
    By assigning effort to tasks, i am able to filter out tasks that i dont have
    time to complete right now
@@ -335,6 +345,14 @@
                              (not (scheduled))
                              )
                            ((org-ql-block-header "Waiting For"))
+                           )
+             )
+            )
+           ("Rb" "Brief Review"
+            (
+             (org-ql-block '(and
+                             (tags "REVIEW")
+                             )
                            )
              )
             )
