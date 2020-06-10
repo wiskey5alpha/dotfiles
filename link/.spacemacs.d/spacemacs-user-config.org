@@ -424,6 +424,10 @@
      (setq alert-default-style 'libnotify)
      (org-agenda-enable)
    #+END_SRC
+** Export to task juggler
+   #+BEGIN_SRC emacs-lisp
+   (require 'ox-taskjuggler)
+   #+END_SRC
 * user functions
   user function for opening the review file
   #+BEGIN_SRC emacs-lisp
