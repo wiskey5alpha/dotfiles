@@ -359,6 +359,16 @@
            )
         )
    #+END_SRC
+   I want the agenda to show the time grid for the whole day, not just a
+   condensed 'agenda' view
+   #+BEGIN_SRC emacs-lisp
+     (setq org-agenda-time-grid (quote
+     ((daily today remove-match)
+      (0600 0700 0800 0900 1000
+       1100 1200 1300 1400 1500
+       1600 1700 1800 1900 2000)
+      "......" "----------------")))
+   #+END_SRC
 ** archive settings
    I organized all of the archived org items under a date tree, but
    preserve the original file name
