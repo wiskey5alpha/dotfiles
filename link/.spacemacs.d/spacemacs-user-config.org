@@ -367,7 +367,49 @@
              )
             ))
    #+END_SRC
+   Next actions grouped by Effort
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'org-agenda-custom-commands
+        '("Ne" "Next actions by Effort"
+                ((org-ql-block '(and
+                                 (todo "NEXT")
+                                 (not (tags "someday" "calendar"))
+                                 (not (scheduled))
+                                 (property "Effort" "0:15")
+                                 )
+                               ((org-ql-block-header "15 Min Next actions"))
+                               )
 
+                (org-ql-block '(and
+                                 (todo "NEXT")
+                                 (not (tags "someday" "calendar"))
+                                 (not (scheduled))
+                                 (property "Effort" "0:30")
+                                 )
+                               ((org-ql-block-header "30 Min Next actions"))
+                               )
+                (org-ql-block '(and
+                                 (todo "NEXT")
+                                 (not (tags "someday" "calendar"))
+                                 (not (scheduled))
+                                 (property "Effort" "1:00")
+                                 )
+                               ((org-ql-block-header "One hour Next actions"))
+                               )
+                (org-ql-block '(and
+                                 (todo "NEXT")
+                                 (not (tags "someday" "calendar"))
+                                 (not (scheduled))
+                                 (or
+                                  (property "Effort" "2:00")
+                                  (property "Effort" "4:00")
+                                 )
+                                )
+                               ((org-ql-block-header "Long Next actions"))
+                               )
+                ))
+        )
+   #+END_SRC
    A column view of NEXT actions in order to set or view effort and clocked time
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'org-agenda-custom-commands
@@ -400,6 +442,7 @@
              )
             ))
    #+END_SRC
+
 
    Anything that i've tagged to review
    #+BEGIN_SRC emacs-lisp
