@@ -233,7 +233,7 @@
    - tagged with one of the ignored tags
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'org-agenda-custom-commands
-        '("s" "Stuck Projects"
+        '("K" "Stuck Projects"
              ((org-ql-block '(and
                              (todo "TODO")
                              (not (tags "wait" "someday" "calendar"))
@@ -442,7 +442,6 @@
              )
             ))
    #+END_SRC
-
 
    Anything that i've tagged to review
    #+BEGIN_SRC emacs-lisp
