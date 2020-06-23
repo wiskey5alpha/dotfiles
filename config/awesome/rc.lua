@@ -72,6 +72,15 @@ net_wireless = net_widgets.wireless({interface="wlo1",
                                      popup_position = "bottom_right"})
 net_wired    = net_widgets.indicator({interfaces = {"enp0s25"}})
 
+
+-- I dont want notifications to timeout until i see them
+naughty.config.notify_callback = function(args)
+  if args.title == "*org*" then
+    args.timeout = 0
+  end
+  return args
+end
+
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.floating,
