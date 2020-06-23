@@ -9,7 +9,7 @@
   #+END_SRC
 * powerline
   #+BEGIN_SRC emacs-lisp
-  (setq powerline-default-separator 'alternate)
+  (setq powerline-default-separator 'arrow-fade)
   #+END_SRC
 * deft
   #+BEGIN_SRC emacs-lisp
@@ -127,7 +127,6 @@
      (setq org-tags-exclude-from-inheritance '(
          "read"
          "REVIEW"
-         "someday"
          "wait"
          "fifo"
          "journal"
@@ -238,15 +237,30 @@
                              (todo "TODO")
                              (not (tags "wait" "someday" "calendar"))
                              (not (scheduled))
-                             (not (descendants (todo "NEXT")))
-                             (not (descendants (todo "TODO")))
-                             (not (descendants (scheduled)))
+                             (children ( todo "DONE"))
+                             (not (children (todo "NEXT")))
+                             (not (children (todo "TODO")))
+                             (not (children (scheduled)))
                             )
-                           ((org-ql-block-header "Stuck Projects"))
-                           ))
+                           ((org-ql-block-header "Stuck Projects - All sub-tasks are DONE"))
+                           )
+              (org-ql-block '(and
+                               (todo "TODO")
+                               (not (tags "wait" "someday" "calendar"))
+                               (not (scheduled))
+                               (or
+                                (children (todo "TODO"))
+                                (not (children (todo "DONE")))
+                               )
+                              (not (children (scheduled)))
+                              )
+                             ((org-ql-block-header "Stuck Projects - Needs next actions defined "))
+                             )
+                )
             )
             )
    #+END_SRC
+
 
    The gtd project list.  Any TODO that has NEXT actions assigned to it
    #+BEGIN_SRC emacs-lisp
@@ -423,7 +437,7 @@
                              ((org-ql-block-header "Time Management"))
                              )
                )
-            ((org-agenda-overriding-columns-format "%5TODO %4Effort %4Clocksum %50ITEM(Next Action)")
+            ((org-agenda-overriding-columns-format "%5TODO %4Effort %4Clocksum %70ITEM(Next Action) %10TAGS")
             (org-agenda-view-columns-initially t))
             ))
    #+END_SRC
