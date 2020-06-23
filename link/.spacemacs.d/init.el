@@ -75,6 +75,9 @@ values."
      move-text
      org-ql
      org-alert
+     org-timeline
+     calfw
+     calfw-org
      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -335,6 +338,80 @@ you should place your code here."
   (interactive)
   (find-file "~/org/planner.org")
   )
+(add-hook 'auto-save-hook 'org-save-all-org-buffers)
+
+;; http://emacs-fu.blogspot.com/2009/11/showing-pop-ups.html
+(defun djcb-popup (title msg &optional icon sound)
+  "Show a popup if we're on X, or echo it otherwise; TITLE is the title
+of the message, MSG is the context. Optionally, you can provide an ICON and
+a sound to be played"
+
+  (interactive)
+  (when sound (shell-command
+               (concat "mplayer -really-quiet " sound " 2> /dev/null")))
+  (if (eq window-system 'x)
+      (shell-command (concat "notify-send "
+
+                             (if icon (concat "-i " icon) "")
+                             " '" title "' '" msg "'"))
+    ;; text only version
+
+    (message (concat title ": " msg))))
+
+
+(defun djcb-appt-display (min-to-app new-time msg)
+
+  (djcb-popup (format "Appointment in %s minute(s)" min-to-app) msg
+              "/usr/share/icons/gnome/32x32/status/appointment-soon.png"
+
+              "/usr/share/sounds/ubuntu/stereo/phone-incoming-call.ogg"))
+(setq appt-disp-window-function (function djcb-appt-display))
+
+;; https://emacs.stackexchange.com/questions/35865/org-agenda-remove-time-grid-lines-that-are-in-an-appointment
+;; I want free time to be obvious in the grid view.  Meaning, if an appointment goes from 8-10, "block"
+;; that time in the agenda so that it looks like a time-block...
+(defun org-time-to-minutes (time)
+  "Convert an HHMM time to minutes"
+  (+ (* (/ time 100) 60) (% time 100)))
+
+(defun org-time-from-minutes (minutes)
+  "Convert a number of minutes to an HHMM time"
+  (+ (* (/ minutes 60) 100) (% minutes 60)))
+
+(defadvice org-agenda-add-time-grid-maybe (around mde-org-agenda-grid-tweakify
+                                                  (list ndays todayp))
+  (if (member 'remove-match (car org-agenda-time-grid))
+      (flet ((extract-window
+              (line)
+              (let ((start (get-text-property 1 'time-of-day line))
+                    (dur (get-text-property 1 'duration line)))
+                (cond
+                 ((and start dur)
+                  (cons start
+                        (org-time-from-minutes
+                         (truncate
+                          (+ dur (org-time-to-minutes start))))))
+                 (start start)
+                 (t nil)))))
+        (let* ((windows (delq nil (mapcar 'extract-window list)))
+               (org-agenda-time-grid
+                (list
+                 (car org-agenda-time-grid)
+                 (remove-if
+                  (lambda (time)
+                    (find-if (lambda (w)
+                               (if (numberp w)
+                                   (equal w time)
+                                 (and (>= time (car w))
+                                      (< time (cdr w)))))
+                             windows))
+                  (cadr org-agenda-time-grid) )
+                 (caddr org-agenda-time-grid)
+                 (cadddr org-agenda-time-grid)
+                 )))
+          ad-do-it))
+    ad-do-it))
+(ad-activate 'org-agenda-add-time-grid-maybe)
 
 
 ;; Do not write anything past this comment. This is where Emacs will

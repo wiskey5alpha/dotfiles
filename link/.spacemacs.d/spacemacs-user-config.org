@@ -466,6 +466,11 @@
        1600 1700 1800 1900 2000)
       "......" "----------------")))
    #+END_SRC
+** Agenda timeline
+   #+BEGIN_SRC emacs-lisp
+   (require 'org-timeline)
+   (add-hook'org-agenda-finalize-hook 'org-timeline-insert-timeline :append)
+   #+END_SRC
 ** archive settings
    I organized all of the archived org items under a date tree, but
    preserve the original file name
@@ -517,20 +522,42 @@
    #+END_SRC
 ** Turn on alerts based on the agenda schedule
    #+BEGIN_SRC emacs-lisp
+   ;; the appointment notification facility
+   (setq
+     appt-message-warning-time 15 ;; warn 15 min in advance
+     appt-display-mode-line t     ;; show in the modeline
+     appt-display-format 'window) ;; use our func
+   (appt-activate 1)              ;; active appt (appointment notification)
+   (display-time)                 ;; time display is required for this...
+
+   ;; update appt:
+   ;; - when starting emacs
+   (org-agenda-to-appt)
+   ;; - each time agenda opened
+   (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
+   ;;
+   (run-at-time "12:05am" (* 24 3600) 'org-agenda-to-appt)
+   #+END_SRC
+   #+BEGIN_SRC emacs-lisp
      (require 'org-alert)
      (setq alert-default-style 'libnotify)
-     (org-agenda-enable)
+     (org-alert-enable)
    #+END_SRC
 ** Export to task juggler
    #+BEGIN_SRC emacs-lisp
    (require 'ox-taskjuggler)
    #+END_SRC
-* user functions
-  user function for opening the review file
+** auto-saving
+   I want all org files to be saved, both as part of autosave, and also
+   following a refile, or capture
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'auto-save-hook 'org-save-all-org-buffers)
+   #+END_SRC
+* calfw
   #+BEGIN_SRC emacs-lisp
-  #+END_SRC
-
-  #+BEGIN_SRC emacs-lisp
+  (require 'calfw)
+  (require 'calfw-org)
+  (setq calendar-week-start-day 1) ;; monday
   #+END_SRC
 * cc-mode
   the following section sets up my preferred formatting style
