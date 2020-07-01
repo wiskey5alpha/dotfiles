@@ -53,6 +53,7 @@
    #+BEGIN_SRC emacs-lisp
      (setq org-enforce-todo-dependencies t)
      (setq org-enforce-todo-checkbox-dependencies t)
+     (setq org-agenda-dim-blocked-tasks nil)
    #+END_SRC
 ** org habits
    #+BEGIN_SRC emacs-lisp
@@ -229,7 +230,7 @@
    A stuck project is:
    - a TODO that has no NEXT or TODOs
    - is not scheduled for later
-   - tagged with one of the ignored tags
+   - not tagged with one of the ignored tags
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'org-agenda-custom-commands
         '("K" "Stuck Projects"
@@ -242,19 +243,40 @@
                              (not (children (todo "TODO")))
                              (not (children (scheduled)))
                             )
-                           ((org-ql-block-header "Stuck Projects - All sub-tasks are DONE"))
+                           ((org-ql-block-header "Potential close - A TODO with only DONE tasks"))
                            )
-              (org-ql-block '(and
+               (org-ql-block '(and
                                (todo "TODO")
                                (not (tags "wait" "someday" "calendar"))
                                (not (scheduled))
                                (or
                                 (children (todo "TODO"))
-                                (not (children (todo "DONE")))
+                                (children (todo "DONE"))
                                )
-                              (not (children (scheduled)))
+                               (not (children (todo "NEXT")))
+                               (not (children (scheduled)))
                               )
-                             ((org-ql-block-header "Stuck Projects - Needs next actions defined "))
+                             ((org-ql-block-header "Needs Actions Defined - A TODO with only TODO or DONE tasks"))
+                             )
+               (org-ql-block '(and
+                               (todo "DONE")
+                               (not (tags "wait" "someday" "calendar"))
+                               (not (scheduled))
+                               (or
+                                (children (todo "TODO"))
+                                (children (todo "NEXT"))
+                                )
+                               (not (children (scheduled)))
+                               )
+                             ((org-ql-block-header "Missed Actions - A DONE with active TODO or NEXT"))
+                             )
+              (org-ql-block '(and
+                               (todo "NEXT")
+                               (not (tags "wait" "someday" "calendar"))
+                               (not (scheduled))
+                               (children (todo))
+                              )
+                             ((org-ql-block-header "Mislabled Actions - A NEXT with children"))
                              )
                 )
             )
@@ -274,7 +296,23 @@
                                )
                              ((org-ql-block-header "The Project List"))
                 )
-               )
+              )
+             (
+              (org-agenda-with-colors t)
+              (org-agenda-remove-tags t)
+              (ps-print-color-p 'black-white)
+              (ps-paper-type 'letter)
+              (ps-top-margin 3)
+              (ps-bottom-margin 3)
+              (ps-left-margin 3)
+              (ps-right-margin 3)
+              (ps-font-size 8.0)
+              (ps-print-header nil)
+              (ps-landscape-mode t)
+              (ps-number-of-columns 2)
+              )
+             ( "~/paperPlanner/Agenda-Export/Page-03.TheProjectList.txt"
+               "~/paperPlanner/Agenda-Export/Page-03.TheProjectList.ps")
               )
         )
     #+END_SRC
@@ -481,9 +519,11 @@
       "......" "----------------")))
    #+END_SRC
 ** Agenda timeline
+   I really like this view, but I dont think I want it in _every_ printout and
+   agenda.  I only want it on the daily agenda view.
    #+BEGIN_SRC emacs-lisp
-   (require 'org-timeline)
-   (add-hook'org-agenda-finalize-hook 'org-timeline-insert-timeline :append)
+   ;; (require 'org-timeline)
+   ;; (add-hook'org-agenda-finalize-hook 'org-timeline-insert-timeline :append)
    #+END_SRC
 ** archive settings
    I organized all of the archived org items under a date tree, but
@@ -559,8 +599,58 @@
    #+END_SRC
 ** Export to task juggler
    #+BEGIN_SRC emacs-lisp
-   (require 'ox-taskjuggler)
+     (require 'ox-taskjuggler)
+     (setq org-taskjuggler-project-tag "tjp")
+     (setq org-taskjuggler-reports-directory "~/org/reports")
    #+END_SRC
+
+   #+RESULTS:
+   : ~/org/reports
+
+   Modify the default report to provide a more reasonable report.
+   #+BEGIN_SRC emacs-lisp
+   (setq org-taskjuggler-default-project-duration 980)
+   (setq org-taskjuggler-default-reports
+     '("textreport report \"Plan\" {
+     formats html
+     header '== <-query attribute=\"name\"-> =='
+
+     center -8<-
+       [#Plan Plan] | [#Resource_Allocation Resource Allocation]
+       ----
+       === Plan ===
+       <[report id=\"plan\"]>
+       ----
+       === Resource Allocation ===
+       <[report id=\"resourceGraph\"]>
+     ->8-
+   }
+
+   # A traditional Gantt chart with a project overview.
+   taskreport plan \"\" {
+     headline \"Project Plan\"
+     columns bsi, name, complete, start, end, effort, chart
+   # rollup completed tasks
+   #  rolluptask plan.end < ${now}
+     loadunit shortauto
+     hideresource 1
+   }
+
+   # A graph showing resource allocation. It identifies whether each
+   # resource is under- or over-allocated for.
+   resourcereport resourceGraph \"\" {
+     headline \"Resource Allocation Graph\"
+     columns no, name, effort, weekly
+     loadunit shortauto
+     hidetask ~(isleaf() & isleaf_())
+     sorttasks plan.start.up
+   }"))
+
+   #+END_SRC
+
+   #+RESULTS:
+   | textreport report "Plan" { |
+
 ** auto-saving
    I want all org files to be saved, both as part of autosave, and also
    following a refile, or capture
@@ -619,6 +709,12 @@
   (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
   (add-hook 'c++-mode-hook 'my-c-mode-common-hook)
   #+END_SRC
+* Plantuml
+  plantuml is a java applet that can convert text into a UML diagram
+  #+BEGIN_SRC emacs-lisp
+  (setq org-plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
+  #+END_SRC
+
 * Exec path from shell
   the -i argument causes an error on startup because i use .bashrc instead of
   .profile for configuring my shell
