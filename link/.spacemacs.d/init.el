@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     rust
      windows-scripts
      javascript
      html
@@ -348,10 +349,10 @@ a sound to be played"
 
   (interactive)
   (when sound (shell-command
-               (concat "mplayer -really-quiet " sound " 2> /dev/null")))
+               (concat "cvlc --play-and-exit " sound " 2> /dev/null")))
   (if (eq window-system 'x)
       (shell-command (concat "notify-send "
-
+                             "-t 300000 "
                              (if icon (concat "-i " icon) "")
                              " '" title "' '" msg "'"))
     ;; text only version
@@ -362,9 +363,9 @@ a sound to be played"
 (defun djcb-appt-display (min-to-app new-time msg)
 
   (djcb-popup (format "Appointment in %s minute(s)" min-to-app) msg
-              "/usr/share/icons/gnome/32x32/status/appointment-soon.png"
+              "/usr/share/icons/Papirus-Dark/48x48/status/task-due.svg"
 
-              "/usr/share/sounds/ubuntu/stereo/phone-incoming-call.ogg"))
+              "/usr/share/sounds/freedesktop/stereo/phone-incoming-call.oga"))
 (setq appt-disp-window-function (function djcb-appt-display))
 
 ;; https://emacs.stackexchange.com/questions/35865/org-agenda-remove-time-grid-lines-that-are-in-an-appointment
