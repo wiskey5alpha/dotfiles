@@ -7,6 +7,7 @@
 [submodule "link/.emacs.d"]
 	path = link/.emacs.d
 	url = https://github.com/syl20bnr/spacemacs
+	ignore = untracked
 [submodule "config/awesome/awesome-wm-widgets"]
 	path = config/awesome/awesome-wm-widgets
 	url = https://github.com/streetturtle/awesome-wm-widgets.git
