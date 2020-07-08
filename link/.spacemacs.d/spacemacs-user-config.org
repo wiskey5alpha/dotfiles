@@ -224,6 +224,7 @@
    #+BEGIN_SRC emacs-lisp
      (setq org-agenda-skip-scheduled-if-done 't)
      (setq org-log-into-drawer 't)
+     (setq org-agenda-leading-zero 't)
      (setq org-agenda-custom-commands '())
    #+END_SRC
 
@@ -253,7 +254,7 @@
                                 (children (todo "TODO"))
                                 (children (todo "DONE"))
                                )
-                               (not (children (todo "NEXT")))
+                               (not (descendants (todo "NEXT")))
                                (not (children (scheduled)))
                               )
                              ((org-ql-block-header "Needs Actions Defined - A TODO with only TODO or DONE tasks"))
@@ -507,6 +508,41 @@
             )
            )
    #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'org-agenda-custom-commands
+        '("Rd" "Detailed Review"
+          ((org-ql-block '(and
+                               (todo)
+                               (not (tags "someday"))
+                               (not (scheduled))
+                               (tags "REVIEW")
+                               )
+                         ((org-ql-block-header "Tasks marked for Review"))
+                         )
+           (org-ql-block '(and
+                           (not (todo))
+                           (not (todo "DONE"))
+                           (not (tags "someday"))
+                           (not (scheduled))
+                           (tags "REVIEW")
+                           )
+                         ((org-ql-block-header "Items marked for Review"))
+                         )
+          (org-ql-block '(deadline :from today :to 7)
+                         ((org-ql-block-header "Upcoming deadlines this week"))
+                         )
+
+          (org-ql-block '(scheduled :from today :to 7)
+                         ((org-ql-block-header "Tasks scheduled for this week"))
+                         )
+
+           (org-ql-block '(clocked :from -7)
+                         ((org-ql-block-header "Tasks worked on last week"))
+                         )
+               )
+              )
+             )
+   #+END_SRC
 
    I want the agenda to show the time grid for the whole day, not just a
    condensed 'agenda' view
@@ -522,14 +558,17 @@
    I really like this view, but I dont think I want it in _every_ printout and
    agenda.  I only want it on the daily agenda view.
    #+BEGIN_SRC emacs-lisp
-   ;; (require 'org-timeline)
-   ;; (add-hook'org-agenda-finalize-hook 'org-timeline-insert-timeline :append)
+     (require 'org-timeline)
+   ;;  (add-hook 'org-agenda-finalize-hook
+   ;;      (lambda () (if (= org-agenda-type 'agenda) (org-timeline-insert-timeline :append))
    #+END_SRC
 ** archive settings
    I organized all of the archived org items under a date tree, but
    preserve the original file name
    #+BEGIN_SRC emacs-lisp
    (setq org-archive-location "~/org/.archive/%s_archive::datetree/")
+   (setq org-archive-save-context-info '(time file olpath category todo itags))
+   (setq org-archive-mark-done t)
    #+END_SRC
 ** capture templates
    #+BEGIN_SRC emacs-lisp
