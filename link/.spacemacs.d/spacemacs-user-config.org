@@ -438,7 +438,7 @@
                                  )
                                ((org-ql-block-header "One hour Next actions"))
                                )
-                (org-ql-block '(and
+                 (org-ql-block '(and
                                  (todo "NEXT")
                                  (not (tags "someday" "calendar"))
                                  (not (scheduled))
@@ -448,6 +448,14 @@
                                  )
                                 )
                                ((org-ql-block-header "Long Next actions"))
+                               )
+                (org-ql-block '(and
+                                 (todo "NEXT")
+                                 (not (tags "someday" "calendar"))
+                                 (not (scheduled))
+                                 (not (property "Effort"))
+                                )
+                               ((org-ql-block-header "Next actions with no Effort Assigned"))
                                )
                 ))
         )
