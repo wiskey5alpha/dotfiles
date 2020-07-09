@@ -156,21 +156,8 @@
    Almost the best feature of org mode.  Enabling org-protocol lets me send
    clips to org from the browser
   #+BEGIN_SRC emacs-lisp
-    ;;;; http://stackoverflow.com/questions/23517372/hook-or-advice-when-aborting-org-capture-before-template-selection
     (require 'org-protocol)
-
-    (defadvice org-capture
-        (after make-full-window-frame activate)
-      "Advise capture to be the only window when used as a popup"
-      (if (equal "emacs-capture" (frame-parameter nil 'name))
-          (delete-other-windows)))
-
-    (defadvice org-capture-finalize
-        (after delete-capture-frame activate)
-      "Advise capture-finalize to close the frame"
-      (if (equal "emacs-capture" (frame-parameter nil 'name))
-          (delete-frame)))
-  #+END_SRC
+ #+END_SRC
 ** Agenda files
    list of agenda files managed in the org directory.
 
