@@ -31,46 +31,50 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     rust
-     windows-scripts
-     javascript
-     html
-     lua
+     ;; emacs tools
+     better-defaults
+     helm
+     evil-commentary
+     evil-snipe
+     ranger
+     pdf-tools
      (keyboard-layout  :variables
                        kl-layout 'dvorak
                        kl-disabled-configurations '(helm org magit twittering-mode))
      themes-megapack
-     helm
-     auto-completion
-     better-defaults
-     emacs-lisp
-     evil-commentary
-     evil-snipe
+     spell-checking
+     ;; programming tools
      git
-     markdown
-     org
-     plantuml
-     deft
+     version-control
      semantic
-     c-c++
      cscope
      gtags
+     syntax-checking
+     ;; programming languages
+     windows-scripts
+     javascript
+     html
+     lua
+     auto-completion
+     emacs-lisp
      python
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
-     spell-checking
-     syntax-checking
-     version-control
-     pdf-tools
-     ranger
-     )
+     c-c++
+     markdown
+     ;; org mode and add ons
+     org
+     plantuml
+     deft
+    )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
+     meson
      tracwiki-mode
      drag-stuff
      move-text

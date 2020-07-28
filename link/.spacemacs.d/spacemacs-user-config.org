@@ -114,7 +114,7 @@
          ("imefdm"   .   ?i)
     ;;   Meetings and People
          ("staff"    .   ?t)
-         ("spe"      .   ?p)
+         ("spe"      .   ?P)
          ("col"      .   ?C)
     ;;   Categories and flags
          ("someday"  .   ?s)
@@ -123,6 +123,7 @@
          ("fifo"     .   ?f)
          ("journal"  .   ?j)
          ("REVIEW"   .   ?R)
+         ("pp"       .   ?p)
          ))
 
      (setq org-tags-exclude-from-inheritance '(
@@ -131,6 +132,7 @@
          "wait"
          "fifo"
          "journal"
+         "pp"
          ))
 
 
@@ -540,7 +542,38 @@
               )
              )
    #+END_SRC
-
+   An agenda view that looks for entries that have not yet been marked as synced
+   using the tag 'pp' to denote "paper planner"
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'org-agenda-custom-commands
+                  '("Rs" "Items that need to be synced with paper"
+                    ((org-ql-block '(and
+                                     (todo "TODO")
+                                     (children (todo "NEXT"))
+                                     (not (tags "pp" "someday"))
+                                     )
+                                   ((org-ql-block-header "Project List Items"))
+                                   )
+                     (org-ql-block '(and
+                                     (todo "NEXT")
+                                     (not (tags "pp" "someday"))
+                                     )
+                                   ((org-ql-block-header "Next Actions"))
+                                   )
+                     (org-ql-block '(and
+                                     (or
+                                      (scheduled :from today :to 7)
+                                      (deadline :from today :to 7)
+                                      (ts-active :from today :to 28)
+                                     )
+                                     (not (tags "pp"))
+                                     )
+                                   ((org-ql-block-header "calendar items"))
+                                   )
+                     )
+                    )
+                  )
+   #+END_SRC
    I want the agenda to show the time grid for the whole day, not just a
    condensed 'agenda' view
    #+BEGIN_SRC emacs-lisp
@@ -692,6 +725,15 @@
    following a refile, or capture
    #+BEGIN_SRC emacs-lisp
    (add-hook 'auto-save-hook 'org-save-all-org-buffers)
+   #+END_SRC
+** elgantt
+   this is an external git repo with a very interesting tool.  Its an
+   interactive gantt view of your agenda
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'load-path "~/.spacemacs.d/external/elgantt/")
+     (require 'elgantt)
+     (setq elgantt-timestamps-to-display '(deadline timestamp scheduled timestamp-range))
+     (setq elgantt-draw-overarching-headers 't)
    #+END_SRC
 * calfw
   #+BEGIN_SRC emacs-lisp
