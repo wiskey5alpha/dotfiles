@@ -14,3 +14,7 @@
 [submodule "config/awesome/net_widgets"]
 	path = config/awesome/net_widgets
 	url = https://github.com/pltanton/net_widgets.git
+[submodule "link/.spacemacs.d/external/elgantt"]
+	path = link/.spacemacs.d/external/elgantt
+	url = https://github.com/legalnonsense/elgantt
+	ingnore = untracked
