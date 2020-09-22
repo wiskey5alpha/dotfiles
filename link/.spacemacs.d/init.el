@@ -81,6 +81,7 @@ values."
      org-ql
      org-alert
      org-timeline
+     org-attach-screenshot
      calfw
      calfw-org
      )
