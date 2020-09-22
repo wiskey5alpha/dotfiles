@@ -27,8 +27,23 @@ function add_ppa() {
 apt_packages+=(
   build-essential
   git-core
-  python-pip
+  python3-pip
   tree
+# terminal essentials
+  tmux
+  powerline
+# Window manager and associated gloss
+  awesome
+  awesome-extra
+  compton
+  fonts-indic
+  fonts-monofur
+  neofetch
+  papirus-icon-theme
+  rofi
+  vlc
+  xscreensaver
+  udiskie
 )
 
   # Misc
