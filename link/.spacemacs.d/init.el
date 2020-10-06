@@ -74,7 +74,7 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
-     meson
+     meson-mode
      tracwiki-mode
      drag-stuff
      move-text
