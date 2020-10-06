@@ -65,7 +65,7 @@ local calendar_widget     = require("awesome-wm-widgets.calendar-widget.calendar
 local net_widgets         = require("net_widgets")
 
 local cw = calendar_widget ({
-    theme = 'zenburn',
+    --theme = 'zenburn',
     placement = 'bottom_right'
 })
 net_wireless = net_widgets.wireless({interface="wlo1",
