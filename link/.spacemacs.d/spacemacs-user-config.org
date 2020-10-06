@@ -217,6 +217,7 @@
      (setq org-log-into-drawer 't)
      (setq org-agenda-leading-zero 't)
      (setq org-agenda-custom-commands '())
+     (setq org-tags-list-match-sublevels 'indented)
    #+END_SRC
 
    A stuck project is:
@@ -309,91 +310,113 @@
         )
     #+END_SRC
 
+   This is an individual project 'vertical' view.  Meaning, it will run down all
+   of the TODO, NEXT and DONE vertically, and print them hierarchically.  This is how we
+   can print out one project per report/file.
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'org-agenda-custom-commands
+             '("v" "Vertical view of a project"
+                 ((org-ql-block '(and
+                             (or
+                             (todo)
+                             (done))
+                             (not (tags "ignore"))
+                             )
+                           ((org-ql-block-header "Project View"))
+                           )
+                  )
+                 (
+                  (org-agenda-with-colors t)
+                  )
+                 ("~/paperPlanner/Agenda-Export/Page-04.Vertical-ProjectView.ps")
+                 )
+             )
+   #+END_SRC
    Next Actions, all contexts in one long list, un-categorized at the bottom
    #+BEGIN_SRC emacs-lisp
-    (add-to-list 'org-agenda-custom-commands
-       '("Na" "Next Actions"
-            ((org-ql-block '(and
-                             (todo "NEXT")
-                             (tags "comms")
-                             (not (tags "wait" "someday"))
-                             (not (scheduled))
+      (add-to-list 'org-agenda-custom-commands
+         '("Na" "Next Actions"
+              ((org-ql-block '(and
+                               (todo "NEXT")
+                               (tags "comms")
+                               (not (tags "wait" "someday"))
+                               (not (scheduled))
+                               )
+                             ((org-ql-block-header "Communications"))
                              )
-                           ((org-ql-block-header "Communications"))
-                           )
-             (org-ql-block '(and
-                             (todo "NEXT")
-                             (tags "web")
-                             (not (tags "wait" "someday"))
-                             (not (scheduled))
+               (org-ql-block '(and
+                               (todo "NEXT")
+                               (tags "web")
+                               (not (tags "wait" "someday"))
+                               (not (scheduled))
+                               )
+                             ((org-ql-block-header "Web"))
                              )
-                           ((org-ql-block-header "Web"))
-                           )
+                (org-ql-block '(and
+                               (todo "NEXT")
+                               (tags "cac")
+                               (not (tags "wait" "someday"))
+                               (not (scheduled))
+                               )
+                             ((org-ql-block-header "DoD Websites"))
+                             )
+               (org-ql-block '(and
+                               (todo "NEXT")
+                               (tags "imefdm")
+                               (not (tags "wait" "someday"))
+                               (not (scheduled))
+                               )
+                             ((org-ql-block-header "Tactical Network"))
+                             )
+                (org-ql-block '(and
+                               (todo "NEXT")
+                               (tags "mcen")
+                               (not (tags "wait" "someday"))
+                               (not (scheduled))
+                               )
+                             ((org-ql-block-header "MCEN"))
+                             )
+                 (org-ql-block '(and
+                               (todo "NEXT")
+                               (tags "laptop")
+                               (not (tags "wait" "someday"))
+                               (not (scheduled))
+                               )
+                             ((org-ql-block-header "Laptop (system)"))
+                             )
+               (org-ql-block '(and
+                               (todo "NEXT")
+                               (tags "home")
+                               (not (tags "wait" "someday"))
+                               (not (scheduled))
+                               )
+                             ((org-ql-block-header "At Home"))
+                             )
+                 (org-ql-block '(and
+                               (todo "NEXT")
+                               (tags "office")
+                               (not (tags "wait" "someday"))
+                               (not (scheduled))
+                               )
+                             ((org-ql-block-header "At the Office"))
+                             )
               (org-ql-block '(and
-                             (todo "NEXT")
-                             (tags "cac")
-                             (not (tags "wait" "someday"))
-                             (not (scheduled))
+                               (todo "NEXT")
+                               (tags "spe")
+                               (not (tags "wait" "someday"))
+                               (not (scheduled))
+                               )
+                             ((org-ql-block-header "The SPE Roundtable"))
                              )
-                           ((org-ql-block-header "DoD Websites"))
-                           )
-             (org-ql-block '(and
-                             (todo "NEXT")
-                             (tags "imefdm")
-                             (not (tags "wait" "someday"))
-                             (not (scheduled))
+                 (org-ql-block '(and
+                               (todo "NEXT")
+                               (not (tags "comm" "web" "cac" "imefdm" "mcen"
+                                          "laptop" "spe" "home" "office" "wait" "someday"))
+                               (not (scheduled))
+                               )
+                             ((org-ql-block-header "Uncategorized Next Actions"))
                              )
-                           ((org-ql-block-header "Tactical Network"))
-                           )
-              (org-ql-block '(and
-                             (todo "NEXT")
-                             (tags "mcen")
-                             (not (tags "wait" "someday"))
-                             (not (scheduled))
-                             )
-                           ((org-ql-block-header "MCEN"))
-                           )
-               (org-ql-block '(and
-                             (todo "NEXT")
-                             (tags "laptop")
-                             (not (tags "wait" "someday"))
-                             (not (scheduled))
-                             )
-                           ((org-ql-block-header "Laptop (system)"))
-                           )
-             (org-ql-block '(and
-                             (todo "NEXT")
-                             (tags "home")
-                             (not (tags "wait" "someday"))
-                             (not (scheduled))
-                             )
-                           ((org-ql-block-header "At Home"))
-                           )
-               (org-ql-block '(and
-                             (todo "NEXT")
-                             (tags "office")
-                             (not (tags "wait" "someday"))
-                             (not (scheduled))
-                             )
-                           ((org-ql-block-header "At the Office"))
-                           )
-            (org-ql-block '(and
-                             (todo "NEXT")
-                             (tags "spe")
-                             (not (tags "wait" "someday"))
-                             (not (scheduled))
-                             )
-                           ((org-ql-block-header "The SPE Roundtable"))
-                           )
-               (org-ql-block '(and
-                             (todo "NEXT")
-                             (not (tags "comm" "web" "cac" "imefdm" "mcen"
-                                        "laptop" "spe" "home" "office" "wait" "someday"))
-                             (not (scheduled))
-                             )
-                           ((org-ql-block-header "Uncategorized Next Actions"))
-                           )
-           )))
+             )))
    #+END_SRC
 
    Looking for tasks that could be NEXT actions
