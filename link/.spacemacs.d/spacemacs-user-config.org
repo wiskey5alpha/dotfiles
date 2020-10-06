@@ -623,6 +623,52 @@
    (setq org-archive-save-context-info '(time file olpath category todo itags))
    (setq org-archive-mark-done t)
    #+END_SRC
+** Publish projects
+   Setup the initial alist so that downstream SRC blocks can add to
+   #+BEGIN_SRC emacs-lisp
+   (setq org-publish-project-alist '())
+   #+END_SRC
+
+   org-info is a javascript "plugin" for html exported org files that adds
+   several "nice" features for navigating
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'org-publish-project-alist
+                  '("org-info"
+                    :base-directory "/home/aldrichtr/org/org-info/"
+                    :base-extension "js"
+                    :publishing-directory "/var/www/www.timforge.local/htdocs/styles"
+                    :publishing-function org-publish-attachment
+                    )
+                  )
+   #+END_SRC
+
+   Any style sheets that I've created
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'org-publish-project-alist
+                  '("styles"
+                   :base-directory "/home/aldrichtr/org/styles/"
+                   :base-extension "css"
+                   :publishing-directory "/var/www/www.timforge.local/htdocs/styles"
+                   :publishing-function org-publish-attachment
+                   )
+                  )
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'org-publish-project-alist
+                  '("org files"
+                    :base-directory "/home/aldrichtr/org/"
+                    :base-extension "org"
+                    :publishing-directory "/var/www/www.timforge.local/htdocs"
+                    :recursive t
+                    :makeindex t
+                    :auto-sitemap t
+                    :sitemap-filename "default.org"
+                    :publishing-function org-html-publish-to-html
+                    )
+                  )
+   #+END_SRC
+
 ** capture templates
    #+BEGIN_SRC emacs-lisp
    (setq org-capture-templates
