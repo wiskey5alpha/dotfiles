@@ -333,17 +333,11 @@
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'org-agenda-custom-commands
              '("v" "Vertical view of a project"
-                 ((org-ql-block '(and
-                             (or
-                             (todo)
-                             (done))
-                             (not (tags "ignore"))
-                             )
-                           ((org-ql-block-header "Project View"))
-                           )
+               ((tags-todo "-someday-WAIT/!")
                   )
                  (
                   (org-agenda-with-colors t)
+                  (org-tags-match-list-sublevels 'indented)
                   )
                  ("~/paperPlanner/Agenda-Export/Page-04.Vertical-ProjectView.ps")
                  )
