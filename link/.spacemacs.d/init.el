@@ -346,6 +346,66 @@ you should place your code here."
   )
 (add-hook 'auto-save-hook 'org-save-all-org-buffers)
 
+(defadvice org-capture-finalize (after delete-capture-frame activate)
+  "Advise capture-finalize to close the frame if it is the capture frame"
+  (if (equal "capture" (frame-parameter nil 'name))
+      (delete-frame)))
+
+(defun make-capture-frame ()
+  "Create a new frame and run org-capture"
+  (interactive)
+  (make-frame '((name . "capture")))
+  (select-frame-by-name "capture")
+  (delete-other-windows)
+  (org-capture)
+  )
+
+   ;; this function creates an new buffer with just the current tree in
+   ;; it.  Next it sets some ps-print settings, and finally saves the
+   ;; file as a postscript for printing.
+   (defun print-narrowed-project ()
+     (interactive)
+       (org-tree-to-indirect-buffer)
+       (set-buffer org-last-indirect-buffer)
+       (setq ps-number-of-columns 1)
+       (setq ps-landscape-mode nil)
+       (setq ps-paper-type 'statement)
+       (setq ps-top-margin 63)
+       (setq ps-bottom-margin 36)
+       (setq ps-left-margin 18)
+       (setq ps-right-margin 18)
+       (setq ps-zebra-stripes t)
+       (setq ps-zebra-stripe-height 1)
+       (setq ps-print-header nil)
+       (setq ps-print-footer nil)
+       (setq ps-print-n-of-n nil)
+       (ps-spool-buffer)
+       (set-buffer "*PostScript*")
+       (write-file (concat "~/paperPlanner/Agenda-Export/" (buffer-name org-last-indirect-buffer) ".ps"))
+     )
+
+   (defun print-buffer-as-planner-page ()
+     (interactive)
+       (setq ps-number-of-columns 1)
+       (setq ps-landscape-mode nil)
+       (setq ps-paper-type 'statement)
+       (setq ps-top-margin 63)
+       (setq ps-bottom-margin 36)
+       (setq ps-left-margin 18)
+       (setq ps-right-margin 18)
+       (setq ps-zebra-stripes t)
+       (setq ps-zebra-stripe-height 1)
+       (setq ps-print-header nil)
+       (setq ps-print-footer nil)
+       (setq ps-print-n-of-n nil)
+       (ps-spool-buffer)
+       (set-buffer "*PostScript*")
+       (write-file (concat "~/paperPlanner/Agenda-Export/" (buffer-name org-last-indirect-buffer) ".ps"))
+       )
+
+
+
+
 ;; http://emacs-fu.blogspot.com/2009/11/showing-pop-ups.html
 (defun djcb-popup (title msg &optional icon sound)
   "Show a popup if we're on X, or echo it otherwise; TITLE is the title
