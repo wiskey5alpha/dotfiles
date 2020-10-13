@@ -30,6 +30,23 @@
   (setq deft-auto-save-interval 30)
   #+END_SRC
 * org-mode
+** org modules and exporters
+   Org mode is a system with many add-ons and features.  The Export function has
+   many more options than what is set as default
+   #+BEGIN_SRC emacs-lisp
+   (setq org-export-backends
+   '(ascii
+     beamer
+     html
+     icalendar
+     latex
+     md
+     odt
+     org
+     taskjuggler
+     )
+     )
+   #+END_SRC
 ** org mode hooks
    things to enable based on the file type
    #+BEGIN_SRC emacs-lisp
