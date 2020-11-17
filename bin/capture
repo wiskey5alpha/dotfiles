@@ -1,0 +1,4 @@
+#!/bin/sh
+
+tmux split-window -hb emacsclient -t -e '(make-capture-frame)'
+tmux delete-pane
