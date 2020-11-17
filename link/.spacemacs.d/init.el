@@ -31,6 +31,8 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     yaml
+     ruby
      ;; emacs tools
      better-defaults
      helm
@@ -51,6 +53,7 @@ values."
      gtags
      syntax-checking
      ;; programming languages
+     ansible
      windows-scripts
      javascript
      html
