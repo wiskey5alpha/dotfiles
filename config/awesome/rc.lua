@@ -50,7 +50,7 @@ local theme_path = require("gears.filesystem").get_dir("config") .. "themes/" ..
 beautiful.init(theme_path)
 
 -- This is used later as the default terminal and editor to run.
-terminal   = "x-terminal-emulator"
+terminal   = "urxvt"
 editor     = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 modkey     = "Mod4"
