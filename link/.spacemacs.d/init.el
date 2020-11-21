@@ -52,6 +52,7 @@ values."
      cscope
      gtags
      syntax-checking
+     colors ;turn on color indentification
      ;; programming languages
      ansible
      windows-scripts

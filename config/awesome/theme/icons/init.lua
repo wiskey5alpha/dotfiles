@@ -10,6 +10,9 @@ return {
   game = dir .. '/google-controller.svg',
   lab = dir .. '/flask.svg',
   vm = dir .. '/ship-wheel.svg',
+  -- my additions
+  compass = dir .. '/compass.svg',
+  terminal = dir .. '/terminal.svg',
   --others
   menu = dir .. '/menu.svg',
   close = dir .. '/close.svg',
