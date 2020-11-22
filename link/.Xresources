@@ -1,8 +1,15 @@
 ! Select the fonts to be used. This is a comma separated list of font names that
 !are checked in order when trying to find glyphs for characters
+#define font11     Anonymice Nerd Font Mono
+#define font12     m+1 for Powerline
+#define font21     Inconsolata
+#define font22      Nerd Font
 
-URxvt*font: xft:Source\ Code\ Pro\ Medium:pixelsize=13:antialias=true:hinting=true,xft:Source\ Code\ Pro\ Medium:pixelsize=13:antialias=true:hinting=true
-URxvt*boldFont: xft:Source\ Code\ Pro\ Medium:bold:pixelsize:13
+
+
+
+URxvt*font: xft:font11:pixelsize=16:antialias=true:hinting=true, xft:font12:pixelsize=16:antialias=true:hinting=true
+URxvt*boldFont: xft:font11:bold:pixelsize:16,xft:font12:bold:pixelsize:16
 !URxvt*italicFont:
 !URxvt*boldItalicFont:
 
@@ -123,6 +130,11 @@ URxvt*mouseWheelScrollPage: false
 ! Mouse pointer background colour
 !URxvt*pointerColor2: blue
 
+!enable the following perl extentions for urxvt:
+!look in /usr/lib/urxvt/perl
+URxvt.perl-ext-common: selection-to-clipboard,tabbed,background
+
+
 ! ------------------------------------------------------------------------------
 ! ROFI Color theme
 ! ------------------------------------------------------------------------------
@@ -131,10 +143,6 @@ rofi.color-window: #393939, #393939, #268bd2
 rofi.color-normal: #393939, #ffffff, #393939, #268bd2, #ffffff
 rofi.color-active: #393939, #268bd2, #393939, #268bd2, #205171
 rofi.color-urgent: #393939, #f3843d, #393939, #268bd2, #ffc39c
-
-!enable the following perl extentions for urxvt:
-!look in /usr/lib/urxvt/perl
-URxvt.perl-ext-common: selection-to-clipboard,tabbed
 
 !Theme Two from
 !https://web.archive.org/web/20090130061234/http://phraktured.net/terminal-colors/
@@ -158,3 +166,5 @@ URxvt.perl-ext-common: selection-to-clipboard,tabbed
 *color13:    rgb:cf/9e/be
 *color14:    rgb:71/be/be
 *color15:    rgb:ff/ff/ff
+
+URxvt.background.expr: scale keep {load "/home/aldrichtr/Pictures/dopamine.png"}
