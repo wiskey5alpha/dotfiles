@@ -315,7 +315,7 @@ local globalKeys =
     function()
       --
     end,
-    {description = 'toggle mute', group = 'hotkeys'}
+    {description = 'Next', group = 'hotkeys'}
   ),
   awful.key(
     {},
@@ -323,7 +323,7 @@ local globalKeys =
     function()
       --
     end,
-    {description = 'toggle mute', group = 'hotkeys'}
+    {description = 'Power down', group = 'hotkeys'}
   ),
   awful.key(
     {},
@@ -331,7 +331,7 @@ local globalKeys =
     function()
       _G.exit_screen_show()
     end,
-    {description = 'toggle mute', group = 'hotkeys'}
+    {description = 'Power off', group = 'hotkeys'}
   ),
   -- Screen management
   awful.key(
@@ -363,16 +363,6 @@ local globalKeys =
     function()
       awful.util.spawn_with_shell('vm-attach attach')
     end
-  ),
-  -- Emoji typing
-  -- setup info at https://gist.github.com/HikariKnight/8562837d28dec3674dba027c7892e6a5
-  awful.key(
-    {modkey},
-    'e',
-    function()
-      awful.util.spawn_with_shell('emoji-toggle')
-    end,
-    {description = 'Toggle the ibus unimoji engine for writing emojis', group = 'hotkeys'}
   )
 )
 
