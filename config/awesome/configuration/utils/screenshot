@@ -1,8 +1,21 @@
 #!/bin/bash
+## 20201125 - TRA
+## Modification of the original script from HikariKnight-material-awesome configuration
+## originally, this script wrapped the KDE spectacle, but I'm using import from imagemagick
+##
+## there are currently three types of screenshots configured in apps.lua
+## - screenshot : takes a screenshot of the whole desktop
+## - region_screenshot : presents a '+' for you to select the area to capture
+## - delayed_screenshot : after a delay of $DELAY seconds, does region_screenshot
+## the image is written to $FILENAME and also added to the system clipboard
+
+DELAY=10
+FILENAME=/tmp/screenshot-$(date +%Y%m%d-%H%M%S).png
+
+
+
 if [ $1 == "--delayed" ]; then
-    sleep 10 ; spectacle -b -n ${@:2} -o /tmp/screenshot.png ; xclip -selection clipboard -target image/png -i /tmp/screenshot.png ; paplay /usr/share/sounds/freedesktop/stereo/camera-shutter.oga
+    sleep $DELAY ; import ${@:2} $FILENAME ; xclip -selection clipboard -target image/png -i $FILENAME ; paplay /usr/share/sounds/freedesktop/stereo/camera-shutter.oga
 else
-    spectacle -b -n $@ -o /tmp/screenshot.png ; xclip -selection clipboard -target image/png -i /tmp/screenshot.png ; paplay /usr/share/sounds/freedesktop/stereo/camera-shutter.oga
+    import $@ $FILENAME ; xclip -selection clipboard -target image/png -i $FILENAME ; paplay /usr/share/sounds/freedesktop/stereo/camera-shutter.oga
 fi
-
-

@@ -12,9 +12,9 @@ return {
     rofi = rofi_command,
     lock = 'i3lock-fancy',
     quake = 'kitty',
-    screenshot = '~/.config/awesome/configuration/utils/screenshot -m',
-    region_screenshot = '~/.config/awesome/configuration/utils/screenshot -r',
-    delayed_screenshot = '~/.config/awesome/configuration/utils/screenshot --delayed -r',
+    screenshot = '~/.config/awesome/configuration/utils/screenshot --window root',
+    region_screenshot = '~/.config/awesome/configuration/utils/screenshot',
+    delayed_screenshot = '~/.config/awesome/configuration/utils/screenshot --delayed',
 
     -- Editing these also edits the default program
     -- associated with each tag/workspace
@@ -32,10 +32,8 @@ return {
     --'blueberry-tray', -- Bluetooth tray icon
     --'xfce4-power-manager', -- Power manager
     'ibus-daemon --xim --daemonize', -- Ibus daemon for keyboard
-    'scream-start', -- scream audio sink
     'numlockx on', -- enable numlock
     '/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)', -- credential manager
-    'blueman-tray', -- bluetooth tray
     -- Add applications that need to be killed between reloads
     -- to avoid multipled instances, inside the awspawn script
     '~/.config/awesome/configuration/awspawn' -- Spawn "dirty" apps that can linger between sessions
