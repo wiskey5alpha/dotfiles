@@ -12,7 +12,7 @@ local dpi = require('beautiful').xresources.apply_dpi
 local icons = require('theme.icons')
 
 -- Clock / Calendar 24h format
-local textclock = wibox.widget.textclock('<span font="Roboto Mono bold 8">%d.%m.%Y\n     %H:%M</span>')
+local textclock = wibox.widget.textclock('<span font="Roboto Mono bold 8">%d.%m.%Y - %H:%M</span>')
 
 -- Clock / Calendar 12AM/PM fornat
 -- local textclock = wibox.widget.textclock('<span font="Roboto Mono bold 9">%d.%m.%Y\n  %I:%M %p</span>\n<span font="Roboto Mono bold 9">%p</span>')
@@ -87,17 +87,66 @@ local LayoutBox = function(s)
   return layoutBox
 end
 
+local TagListBox = function(s)
+  local taglistBox = awful.widget.taglist {
+    screen = s,
+    filter = awful.widget.taglist.filter.all,
+    layout = {
+      spacing = -12,
+      spacing_widget = {
+        color = beautiful.fg_normal,
+        widget = wibox.widget.separator,
+      },
+      layout = wibox.layout.fixed.horizontal
+    },
+    widget_template = {
+        {
+            {
+                {
+                    {
+                        {
+                            id     = 'index_role',
+                            widget = wibox.widget.textbox,
+                        },
+                        margins = 4,
+                        widget  = wibox.container.margin,
+                    },
+                    bg     = beautiful.background.hue_800,
+                    shape  = gears.shape.circle,
+                    widget = wibox.container.background,
+                },
+                layout = wibox.layout.fixed.horizontal,
+            },
+            left  = 4,
+            right = 4,
+            widget = wibox.container.margin
+        },
+        id     = 'background_role',
+        widget = wibox.container.background,
+        create_callback = function(self, c3, index, objects) --luacheck: no unused args
+            self:get_children_by_id('index_role')[1].markup = '<b> '..index..' </b>'
+        end,
+        update_callback = function(self, c3, index, objects) --luacheck: no unused args
+            self:get_children_by_id('index_role')[1].markup = '<b> '..index..' </b>'
+        end,
+    },
+    buttons = taglist_buttons
+  }
+
+  return taglistBox
+end
+
 local TopPanel = function(s, offset)
   local offsetx = 0
   if offset == true then
-    offsetx = dpi(40)
+    offsetx = dpi(32)
   end
   local panel =
     wibox(
     {
       ontop = true,
       screen = s,
-      height = dpi(40),
+      height = dpi(32),
       width = s.geometry.width - offsetx,
       x = s.geometry.x + offsetx,
       y = s.geometry.y,
@@ -105,14 +154,15 @@ local TopPanel = function(s, offset)
       bg = beautiful.background.hue_800,
       fg = beautiful.fg_normal,
       struts = {
-        top = dpi(40)
+        top = dpi(32)
       }
     }
   )
 
+
   panel:struts(
     {
-      top = dpi(40)
+      top = dpi(32)
     }
   )
 
@@ -120,13 +170,13 @@ local TopPanel = function(s, offset)
     layout = wibox.layout.align.horizontal,
     {
       layout = wibox.layout.fixed.horizontal,
-      -- Create a taglist widget
       TaskList(s),
       add_button
     },
     nil,
     {
       layout = wibox.layout.fixed.horizontal,
+      TagListBox(s),
       -- Clock
       clock_widget,
       -- Layout box

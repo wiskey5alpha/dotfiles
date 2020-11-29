@@ -41,6 +41,18 @@ local function list_update(w, buttons, label, data, objects)
   w:reset()
   for i, o in ipairs(objects) do
     local cache = data[o]
+    -- TRA :
+    -- ib = icon box
+    -- cb = the close button box (when you hover over the x you'll see the circle)
+    --      it's actually a nested widget with a 'x' image inside a circle shape
+    -- tb = the text box, it lists the app or file name
+    -- cbm = cb margin
+    -- bgb = background
+    -- tbm = text box margin
+    -- ibm = icon box margin
+    -- tt = tool tip
+    -- l = layout
+    -- ll = also a layout, around l
     local ib, cb, tb, cbm, bgb, tbm, ibm, tt, l, ll, bg_clickable
     if cache then
       ib = cache.ib
@@ -63,7 +75,7 @@ local function list_update(w, buttons, label, data, objects)
         )
       )
       cb.shape = gears.shape.circle
-      cbm = wibox.container.margin(cb, dpi(4), dpi(8), dpi(12), dpi(12))
+      cbm = wibox.container.margin(cb, dpi(4), dpi(4), dpi(4), dpi(4))
       cbm:buttons(
         gears.table.join(
           awful.button(
@@ -79,7 +91,7 @@ local function list_update(w, buttons, label, data, objects)
       bg_clickable = clickable_container()
       bgb = wibox.container.background()
       tbm = wibox.container.margin(tb, dpi(4), dpi(4))
-      ibm = wibox.container.margin(ib, dpi(12), dpi(12), dpi(12), dpi(12))
+      ibm = wibox.container.margin(ib, dpi(1), dpi(1), dpi(1), dpi(1))
       l = wibox.layout.fixed.horizontal()
       ll = wibox.layout.fixed.horizontal()
 

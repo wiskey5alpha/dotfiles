@@ -5,6 +5,7 @@ local top_panel = require('layout.top-panel')
 -- Create a wibox for each screen and add it
 awful.screen.connect_for_each_screen(
   function(s)
+    -- TRA TODO : This if statement right here is what keeps the left-panel only on screen 1
     if s.index == 1 then
       -- Create the left_panel
       s.left_panel = left_panel(s)

@@ -48,6 +48,7 @@ _G.client.connect_signal(
       c.sticky = true
       c.hidden = not opened
       c.maximized_horizontal = true
+      c.height = 400
     end
   end
 )
