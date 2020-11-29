@@ -30,8 +30,10 @@ apt_packages+=(
   python3-pip
   tree
 # terminal essentials
+  kitty
   tmux
   powerline
+  fasd
 # Window manager and associated gloss
   awesome
   awesome-extra
@@ -53,7 +55,7 @@ apt_packages+=(
 
 
 #function other_stuff() {
- 
+
 #}
 
 ####################
