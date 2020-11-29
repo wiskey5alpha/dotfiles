@@ -18,8 +18,10 @@ function md() {
   mkdir -p "$@" && cd "$@"
 }
 
-# Fast directory switching
-mkdir -p $DOTFILES/caches/z
-export _Z_NO_PROMPT_COMMAND=1
-export _Z_DATA=$DOTFILES/caches/z/z
-. $DOTFILES/vendor/z/z.sh
+
+fasd_cache="$HOME/.fasd-init-bash"
+if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
+    fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
+fi
+source "$fasd_cache"
+unset fasd_cache
