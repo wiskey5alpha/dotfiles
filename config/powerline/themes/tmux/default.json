@@ -1,6 +1,11 @@
 {
   "segments": {
     "right": [
+        {
+            "function": "powerline.segments.common.players.spotify",
+            "priority": 33,
+            "name": "player"
+        },
       {
         "function": "powerline.segments.common.bat.battery",
         "priority": 34
