@@ -10,7 +10,8 @@ local function run_once(cmd)
   if firstspace then
     findme = cmd:sub(0, firstspace - 1)
   end
-  awful.spawn.with_shell(string.format('pgrep -u $USER -x %s > /dev/null || (%s)', findme, cmd))
+  -- TRA 2020.12.01: the shell was changed to fish from bash, which changed the syntax a bit
+  awful.spawn.with_shell(string.format('command pgrep -u $USER -x %s > /dev/null; or %s', findme, cmd))
 end
 
 for _, app in ipairs(apps.run_on_start_up) do
