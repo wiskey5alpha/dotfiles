@@ -682,46 +682,47 @@
 
 ** capture templates
    #+BEGIN_SRC emacs-lisp
-   (setq org-capture-templates
-      '(
-        ("a" "Appointment" entry
-         (file+headline "~/org/calendar.org" "Appointments")
-         "* %?\n  %T")
-        ("o" "Note" entry
-         (file "~/org/review.org" )
-         "* %? ")
-        ("j" "Journal entry" entry
-         (file "~/org/journal.org" )
-         "* %<%Y-%m-%d> %? :journal:REVIEW: \n %u"
-         :prepend t :clock-in t :clock-resume t)
-        ;;; When typing 'w' in firefox
-        ;;; |%:description | %^{TITLE} | title of the web-page |
-        ;;; |%:link        | %c        | URL                   |
-        ;;; |%:initial     | %i        | selected text         |
-        ("w" "Web clipping" entry
-         (file "~/org/review.org" )
-         "* %:description%? :web:\n  %:initial\n  Source :\n %:link"
-         :immediate-finish t
-         )
-        ("W" "capture web clip with note" entry
-         (file "~/org/review.org" )
-         "* %:description%? :web:\n  %:initial\n  Source :\n %:link"
-         )
-        ( "t" "Add ticket to database" entry
-          (file+headline "~/org/tickets.org" "Backlog")
-          "* NEW %?\n%u\n" :prepend t )
-        ( "T" "Add ticket to database (with link)" entry
-          (file+headline "~/org/tickets.org" "Backlog")
-          "* NEW %?\n%u\n\n  Source :\n %F:%(with-current-buffer
-            (org-capture-get :original-buffer)
-            (number-to-string (line-number-at-pos)))"
-          :prepend t )
-        ("S" "Add a Song to the list" checkitem
-         (file+headline "~/org/lists.org" "Music For Purchase")
-         "- [ ] %?"
-         )
-        )
-      )
+        (setq org-capture-templates
+           '(
+             ("a" "Appointment" entry
+              (file+headline "~/org/calendar.org" "Appointments")
+              "* %?\n  %T")
+             ("o" "Note" entry
+              (file "~/org/review.org" )
+              "* %? "
+              :kill-buffer t)
+             ("j" "Journal entry" entry
+              (file "~/org/journal.org" )
+              "* %<%Y-%m-%d> %? :journal:REVIEW: \n %u"
+              :prepend t :clock-in t :clock-resume t)
+             ;;; When typing 'w' in firefox
+             ;;; |%:description | %^{TITLE} | title of the web-page |
+             ;;; |%:link        | %c        | URL                   |
+             ;;; |%:initial     | %i        | selected text         |
+             ("w" "Web clipping" entry
+              (file "~/org/review.org" )
+              "* %:description%? :web:\n  %:initial\n  Source :\n %:link"
+              :immediate-finish t
+              )
+             ("W" "capture web clip with note" entry
+              (file "~/org/review.org" )
+              "* %:description%? :web:\n  %:initial\n  Source :\n %:link"
+              )
+             ( "t" "Add ticket to database" entry
+               (file+headline "~/org/tickets.org" "Backlog")
+               "* NEW %?\n%u\n" :prepend t )
+             ( "T" "Add ticket to database (with link)" entry
+               (file+headline "~/org/tickets.org" "Backlog")
+               "* NEW %?\n%u\n\n  Source :\n %F:%(with-current-buffer
+                 (org-capture-get :original-buffer)
+                 (number-to-string (line-number-at-pos)))"
+               :prepend t )
+             ("S" "Add a Song to the list" checkitem
+              (file+headline "~/org/lists.org" "Music For Purchase")
+              "- [ ] %?"
+              )
+             )
+           )
    #+END_SRC
 ** Turn on alerts based on the agenda schedule
    #+BEGIN_SRC emacs-lisp
