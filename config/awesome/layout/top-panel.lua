@@ -139,7 +139,7 @@ end
 local TopPanel = function(s, offset)
   local offsetx = 0
   if offset == true then
-    offsetx = dpi(32)
+    offsetx = dpi(40)
   end
   local panel =
     wibox(
@@ -165,7 +165,7 @@ local TopPanel = function(s, offset)
       top = dpi(32)
     }
   )
-
+  -- TRA: should add an if not screen 1 here for the taglist in the top bar
   panel:setup {
     layout = wibox.layout.align.horizontal,
     {
