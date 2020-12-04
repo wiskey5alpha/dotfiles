@@ -1,0 +1,16 @@
+
+session_name: four
+start_directory: ./
+windows:
+  - window_name: main
+    layout: tiled
+    panes:
+      - shell_command:
+          - echo Pane 1
+          - cd ~/projects/
+      - shell_command:
+          - htop
+      - shell_command:
+          - echo Pane 3
+      - shell_command:
+          - echo Pane 4
