@@ -3,6 +3,7 @@
 
 function deft
     set eclient /usr/bin/emacsclient
-
-    command $eclient -a "" -e "(make-deft-frame)"
+    set client_options -a "" -e
+    set emacs_function "(make-deft-frame)"
+    command $eclient $client_options $emacs_function
 end

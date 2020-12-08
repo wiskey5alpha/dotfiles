@@ -3,6 +3,7 @@
 
 function capture
     set eclient /usr/bin/emacsclient
-
-    command $eclient -a "" -e "(make-capture-frame)"
+    set client_options -a "" -e
+    set emacs_function "(make-capture-frame)"
+    command $eclient $client_options $emacs_function
 end
