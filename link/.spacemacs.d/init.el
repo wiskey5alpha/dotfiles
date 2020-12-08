@@ -89,6 +89,7 @@ values."
      org-attach-screenshot
      calfw
      calfw-org
+     remind-mode
      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()

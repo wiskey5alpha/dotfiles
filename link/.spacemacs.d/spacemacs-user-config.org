@@ -34,18 +34,25 @@
    Org mode is a system with many add-ons and features.  The Export function has
    many more options than what is set as default
    #+BEGIN_SRC emacs-lisp
-   (setq org-export-backends
-   '(ascii
-     beamer
-     html
-     icalendar
-     latex
-     md
-     odt
-     org
-     taskjuggler
-     )
-     )
+     (setq org-export-backends
+     '(ascii
+       beamer
+       html
+       icalendar
+       latex
+       md
+       odt
+       org
+       taskjuggler
+       )
+       )
+   #+END_SRC
+   Set up color source code blocks in latex
+   #+BEGIN_SRC emacs-lisp
+     (require 'ox-latex)
+     (add-to-list 'org-latex-packages-alist '("" "minted"))
+     (setq org-export-latex-listings 'minted)
+     (setq org-src-fontify-natively t)
    #+END_SRC
 ** org mode hooks
    things to enable based on the file type
