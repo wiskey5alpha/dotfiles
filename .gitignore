@@ -21,8 +21,7 @@
 
 # the onedrive client has a config file, but also some state databases
 # we can ignore anything besides the config
-/config/onedrive/items.sqlite3-wal
-
+/config/onedrive/*sqlite3*
+/config/onedrive/refresh_token
 # Ignore any file with LOCAL in the name (good for per-machine vars/functions)
 *LOCAL*
-config/onedrive/*sqlite3*
