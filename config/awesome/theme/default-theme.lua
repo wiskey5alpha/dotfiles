@@ -60,9 +60,22 @@ local awesome_overrides =
   end
 
   -- Layout
-
-  theme.layout_max = theme.icons .. 'layouts/arrow-expand-all.png'
-  theme.layout_tile = theme.icons .. 'layouts/view-quilt.png'
+theme.layout_tile       = theme.icons .. "layouts/tile.png"
+theme.layout_tileleft   = theme.icons .. "layouts/tileleft.png"
+theme.layout_tilebottom = theme.icons .. "layouts/tilebottom.png"
+theme.layout_tiletop    = theme.icons .. "layouts/tiletop.png"
+theme.layout_fairv      = theme.icons .. "layouts/fairv.png"
+theme.layout_fairh      = theme.icons .. "layouts/fairh.png"
+theme.layout_spiral     = theme.icons .. "layouts/spiral.png"
+theme.layout_dwindle    = theme.icons .. "layouts/dwindle.png"
+theme.layout_max        = theme.icons .. "layouts/max.png"
+theme.layout_fullscreen = theme.icons .. "layouts/fullscreen.png"
+theme.layout_magnifier  = theme.icons .. "layouts/magnifier.png"
+theme.layout_floating   = theme.icons .. "layouts/floating.png"
+theme.layout_cornernw   = theme.icons .. "layouts/cornernw.png"
+theme.layout_cornerne   = theme.icons .. "layouts/cornerne.png"
+theme.layout_cornersw   = theme.icons .. "layouts/cornersw.png"
+theme.layout_cornerse   = theme.icons .. "layouts/cornerse.png"
 
   -- Taglist
 

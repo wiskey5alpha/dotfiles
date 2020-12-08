@@ -165,24 +165,43 @@ local TopPanel = function(s, offset)
       top = dpi(32)
     }
   )
-  -- TRA: should add an if not screen 1 here for the taglist in the top bar
-  panel:setup {
-    layout = wibox.layout.align.horizontal,
-    {
-      layout = wibox.layout.fixed.horizontal,
-      TaskList(s),
-      add_button
-    },
-    nil,
-    {
-      layout = wibox.layout.fixed.horizontal,
-      TagListBox(s),
-      -- Clock
-      clock_widget,
-      -- Layout box
-      LayoutBox(s)
+  -- We only need the extra taglist on the top if we don't have the side panel
+  if s.index == 1 then
+    panel:setup {
+      layout = wibox.layout.align.horizontal,
+      {
+        layout = wibox.layout.fixed.horizontal,
+        TaskList(s),
+        add_button
+      },
+      nil,
+      {
+        layout = wibox.layout.fixed.horizontal,
+        -- Clock
+        clock_widget,
+        -- Layout box
+        LayoutBox(s)
+      }
     }
-  }
+  else
+    panel:setup {
+      layout = wibox.layout.align.horizontal,
+      {
+        layout = wibox.layout.fixed.horizontal,
+        TaskList(s),
+        add_button
+      },
+      nil,
+      {
+        layout = wibox.layout.fixed.horizontal,
+        TagListBox(s),
+        -- Clock
+        clock_widget,
+        -- Layout box
+        LayoutBox(s)
+      }
+    }
+  end
 
   return panel
 end
