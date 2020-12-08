@@ -9,10 +9,10 @@ awful.screen.connect_for_each_screen(
     if s.index == 1 then
       -- Create the left_panel
       s.left_panel = left_panel(s)
-      -- Create the Top bar
+      -- Create the Top bar, offset for left-panel
       s.top_panel = top_panel(s, true)
     else
-      -- Create the Top bar
+      -- Create the Top bar, no offset
       s.top_panel = top_panel(s, false)
     end
   end
