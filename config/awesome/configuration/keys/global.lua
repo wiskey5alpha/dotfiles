@@ -76,6 +76,13 @@ local globalKeys =
     end,
     {description = 'Switch to previous window', group = 'client'}
   ),
+  -- Layout manipulation
+  awful.key({ modkey, "Shift"   }, "h", function () awful.client.swap.byidx(  1)    end,
+    {description = "swap with next client by index", group = "client"}),
+  awful.key({ modkey,           }, "h", function () awful.client.swap.byidx( -1)    end,
+    {description = "swap with previous client by index", group = "client"}),
+
+
   -- Programms
   awful.key(
     {modkey},
