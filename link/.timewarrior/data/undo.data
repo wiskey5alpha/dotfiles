@@ -1,0 +1,18 @@
+txn:
+  type: interval
+  before: 
+  after: {"id":0,"start":"20201208T162923Z"}
+txn:
+  type: interval
+  before: {"id":1,"start":"20201208T162923Z"}
+  after: 
+  type: interval
+  before: 
+  after: {"id":1,"start":"20201208T162923Z","tags":["reading eod slide"]}
+txn:
+  type: interval
+  before: {"id":1,"start":"20201208T162923Z","tags":["reading eod slide"]}
+  after: 
+  type: interval
+  before: 
+  after: {"id":1,"start":"20201208T162923Z","end":"20201208T164144Z","tags":["reading eod slide"]}
