@@ -3,17 +3,53 @@
 function fish_greeting -d "Greeting message on shell session start up"
 
     echo ""
-    echo -en "  _______\n"
-    echo -en "  |     |    " (welcome_message) "\n"
-    echo -en "  |_____|    " (show_date_info) "\n"
-    echo -en "  |_____|    \n"
-    echo -en "  |     |    This system:\n"
-    echo -en "  |_____|    " (show_os_info) "\n"
-    echo -en "  |_____|   " (show_cpu_info) "\n"
-    echo -en "  |     |   " (show_mem_info) "\n"
-    echo -en "  |_____|   " (show_net_info) "\n"
-    echo ""
-    set_color grey
+    echo -en "   _____\n"
+
+    echo -en "  |"
+    set_color -b red
+    echo -en    "     "
+    set_color normal
+    echo -en         "|    " (welcome_message) "\n"
+
+    echo -en "  |"
+    set_color -b red
+    echo -en    "_____"
+    set_color normal
+    echo -en         "|    " (show_date_info) "\n"
+    echo -en "  |"
+    set_color -b brblack
+    echo -en "_____"
+    set_color normal
+    echo -en         "|\n"
+    echo -en "  |"
+    set_color -b red
+    echo -en    "     "
+    set_color normal
+    echo -en         "|    This system:\n"
+
+    echo -en "  |"
+    set_color -b red
+    echo -en    "_____"
+    set_color normal
+    echo -en         "|    " (show_os_info) "\n"
+
+    echo -en "  |"
+    set_color -b brblack
+    echo -en "_____"
+    set_color normal
+    echo -en         "|   " (show_cpu_info) "\n"
+
+    echo -en "  |"
+    set_color -b red
+    echo -en    "     "
+    set_color normal
+    echo -en         "|    " (show_mem_info) "\n"
+
+    echo -en "  |"
+    set_color -b red
+    echo -en    "_____"
+    set_color normal
+    echo -en         "|    " (show_net_info) "\n"
     set_color normal
 end
 
@@ -21,7 +57,7 @@ end
 function welcome_message -d "Say welcome to user"
 
     echo -en "Where to today? "
-    set_color FFF  # white
+    set_color -o brwhite
     echo -en (whoami) "!"
     set_color normal
 end
@@ -45,7 +81,8 @@ function show_date_info -d "Prints information about date"
 
     echo -en "Today is "
     set_color cyan
-    echo -en (date +%Y.%m.%d)
+    #echo -en (date +%Y.%m.%d)
+    echo -en (date +"%d %H%M%Z %b%Y")
     set_color normal
     echo -en ", we are up and running for "
     set_color cyan
@@ -65,7 +102,7 @@ function show_os_info -d "Prints operating system info"
 end
 
 
-function show_cpu_info -d "Prints iformation about cpu"
+function show_cpu_info -d "Prints information about cpu"
 
     set --local os_type (uname -s)
     set --local cpu_info ""
