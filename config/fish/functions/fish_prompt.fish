@@ -39,8 +39,12 @@ function fish_prompt --description 'Write out the prompt'
     set -q fish_prompt_pwd_dir_length
     or set -lx fish_prompt_pwd_dir_length 0
 
-    #set_color -b black
-    printf '%s%s%s%s%s%s%s%s%s%s%s%s%s' (set_color -o white) '❰'  (set_color -d normal) (prompt_pwd) (set_color white) $git_info (set_color white) '❱' (set_color white)
+    # grab the amount of tasks that are pending
+    set -l task_count (task status:pending count)
+    printf '%s%s%s%s%s%s%s%s%s%s%s%s%s' \
+        (set_color -o white) '[' $task_count ']❰' \
+        (set_color -d normal) (prompt_pwd) \
+        (set_color white) $git_info '❱'
     if test $laststatus -eq 0
         printf "%s✔%s≻%s " (set_color -o green) (set_color white) (set_color normal)
     else

@@ -6,6 +6,14 @@
             "priority": 33,
             "name": "player"
         },
+        {
+            "function": "powerline_taskwarrior.segments.context",
+            "priority": 70
+        },
+        {
+            "function": "powerline_taskwarrior.segments.active_task",
+            "priority": 70
+        },
       {
         "function": "powerline.segments.common.bat.battery",
         "priority": 34
