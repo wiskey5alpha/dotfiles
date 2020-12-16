@@ -620,9 +620,9 @@
    #+BEGIN_SRC emacs-lisp
      (setq org-agenda-time-grid (quote
      ((daily today remove-match)
-      (0600 0700 0800 0900 1000
-       1100 1200 1300 1400 1500
-       1600 1700 1800 1900 2000)
+      (0600 0630 0700 0730 0800 0830 0900 0930 1000 1030
+       1100 1130 1200 1230 1300 1330 1400 1430 1500 1530
+       1600 1630 1700 1730 1800 1830 1900 1930 2000 2030)
       "......" "----------------")))
    #+END_SRC
 ** Agenda timeline
@@ -630,12 +630,13 @@
    agenda.  I only want it on the daily agenda view.
    #+BEGIN_SRC emacs-lisp
      (require 'org-timeline)
-   ;;  (add-hook 'org-agenda-finalize-hook
-   ;;      (lambda () (if (= org-agenda-type 'agenda) (org-timeline-insert-timeline :append))
+     (add-hook 'org-agenda-finalize-hook
+         (lambda () (if (= org-agenda-type 'agenda) (org-timeline-insert-timeline :append))))
    #+END_SRC
 ** archive settings
    I organized all of the archived org items under a date tree, but
-   preserve the original file name
+   preserve the original file name.  This marks things as done as they are
+   archived if not already.
    #+BEGIN_SRC emacs-lisp
    (setq org-archive-location "~/org/.archive/%s_archive::datetree/")
    (setq org-archive-save-context-info '(time file olpath category todo itags))
@@ -689,47 +690,45 @@
 
 ** capture templates
    #+BEGIN_SRC emacs-lisp
-        (setq org-capture-templates
-           '(
-             ("a" "Appointment" entry
-              (file+headline "~/org/calendar.org" "Appointments")
-              "* %?\n  %T")
-             ("o" "Note" entry
-              (file "~/org/review.org" )
-              "* %? "
-              :kill-buffer t)
-             ("j" "Journal entry" entry
-              (file "~/org/journal.org" )
-              "* %<%Y-%m-%d> %? :journal:REVIEW: \n %u"
-              :prepend t :clock-in t :clock-resume t)
-             ;;; When typing 'w' in firefox
-             ;;; |%:description | %^{TITLE} | title of the web-page |
-             ;;; |%:link        | %c        | URL                   |
-             ;;; |%:initial     | %i        | selected text         |
-             ("w" "Web clipping" entry
-              (file "~/org/review.org" )
-              "* %:description%? :web:\n  %:initial\n  Source :\n %:link"
-              :immediate-finish t
-              )
-             ("W" "capture web clip with note" entry
-              (file "~/org/review.org" )
-              "* %:description%? :web:\n  %:initial\n  Source :\n %:link"
-              )
-             ( "t" "Add ticket to database" entry
-               (file+headline "~/org/tickets.org" "Backlog")
-               "* NEW %?\n%u\n" :prepend t )
-             ( "T" "Add ticket to database (with link)" entry
-               (file+headline "~/org/tickets.org" "Backlog")
-               "* NEW %?\n%u\n\n  Source :\n %F:%(with-current-buffer
-                 (org-capture-get :original-buffer)
-                 (number-to-string (line-number-at-pos)))"
-               :prepend t )
-             ("S" "Add a Song to the list" checkitem
-              (file+headline "~/org/lists.org" "Music For Purchase")
-              "- [ ] %?"
-              )
-             )
-           )
+              (setq org-capture-templates
+                 '(
+                   ("a" "Appointment" entry
+                    (file+headline "~/org/calendar.org" "Appointments")
+                    "* %?\n  %T")
+                   ("o" "Note" entry
+                    (file "~/org/review.org" )
+                    "* %? "
+                    :kill-buffer t)
+                   ("j" "Journal entry" entry
+                    (file "~/org/journal.org" )
+                    "* %<%Y-%m-%d> %? :journal:REVIEW: \n %u"
+                    :prepend t :clock-in t :clock-resume t)
+                   ;;; When typing 'w' in firefox
+                   ;;; |%:description | %^{TITLE} | title of the web-page |
+                   ;;; |%:link        | %c        | URL                   |
+                   ;;; |%:initial     | %i        | selected text         |
+                   ("w" "Web clipping" entry
+                    (file "~/org/review.org" )
+                    "* %:description%? :web:\n  %:initial\n  Source :\n %:link"
+                    :immediate-finish t
+                    )
+                   ("W" "capture web clip with note" entry
+                    (file "~/org/review.org" )
+                    "* %:description%? :web:\n  %:initial\n  Source :\n %:link"
+                    )
+                   ( "t" "Add a todo item and close" entry
+                     (file "~/org/review.org")
+                     "* TODO %i\n  %U\n"
+                     :immediate-finish t
+                     :kill-buffer t)
+                   ( "T" "Add ticket to database (with link)" entry
+                     (file+headline "~/org/tickets.org" "Backlog")
+                     "* NEW %?\n%u\n\n  Source :\n %F:%(with-current-buffer
+                       (org-capture-get :original-buffer)
+                       (number-to-string (line-number-at-pos)))"
+                     :prepend t )
+                   )
+                 )
    #+END_SRC
 ** Turn on alerts based on the agenda schedule
    #+BEGIN_SRC emacs-lisp
@@ -805,8 +804,6 @@
 
    #+END_SRC
 
-   #+RESULTS:
-   | textreport report "Plan" { |
 
 ** auto-saving
    I want all org files to be saved, both as part of autosave, and also
@@ -881,6 +878,12 @@
   (setq org-plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
   #+END_SRC
 
+* Remind files
+  a syntax highlighting library for remind files
+  #+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.spacemacs.d/external/remind-mode.el")
+  (add-to-list 'auto-mode-alist '("\\.rem\\'" . remind-mode))
+  #+END_SRC
 * Exec path from shell
   the -i argument causes an error on startup because i use .bashrc instead of
   .profile for configuring my shell
