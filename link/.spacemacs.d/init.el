@@ -2,6 +2,8 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+(package-initialize)
+
 (org-babel-load-file "~/.spacemacs.d/config/spacemacs-init.org")
 (org-babel-load-file "~/.spacemacs.d/config/spacemacs-user-init.org")
 (org-babel-load-file "~/.spacemacs.d/config/spacemacs-layers.org")

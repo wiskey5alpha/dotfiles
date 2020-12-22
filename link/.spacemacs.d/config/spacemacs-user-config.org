@@ -56,11 +56,11 @@ A configuration file to configure user settings for spacemacs
     :VISIBILITY: children
     :END:
 **** org modules and exporters
-     Org mode is a system with many add-ons and features.  The Export function has
-     many more options than what is set as default
+      Org mode is a system with many add-ons and features.  The Export function has
+      many more options than what is set as default
 
-     #+BEGIN_SRC emacs-lisp
-       (setq org-export-backends
+      #+BEGIN_SRC emacs-lisp
+      (setq org-export-backends
        '(ascii
          beamer
          html
@@ -71,17 +71,17 @@ A configuration file to configure user settings for spacemacs
          org
          taskjuggler
          )
-         )
-     #+END_SRC
+      )
+      #+END_SRC
 
-     Set up color source code blocks in latex
+      Set up color source code blocks in latex
 
-     #+BEGIN_SRC emacs-lisp
-       (require 'ox-latex)
-       (add-to-list 'org-latex-packages-alist '("" "minted"))
-       (setq org-export-latex-listings 'minted)
-       (setq org-src-fontify-natively t)
-     #+END_SRC
+      #+BEGIN_SRC emacs-lisp
+        (require 'ox-latex)
+        (add-to-list 'org-latex-packages-alist '("" "minted"))
+        (setq org-export-latex-listings 'minted)
+        (setq org-src-fontify-natively t)
+      #+END_SRC
 
 **** org mode hooks
      things to enable based on the file type
@@ -162,10 +162,8 @@ A configuration file to configure user settings for spacemacs
      Tags are used for two major functions; filtering and searching
 
      #+BEGIN_SRC emacs-lisp
-     (with-eval-after-load 'org
      ;; Replace org-set-tags with org-set-tags-command in keybinding
      (spacemacs/set-leader-keys-for-major-mode 'org-mode ":" 'org-set-tags-command)
-     )
      (setq org-tags-column -120)
 
      (setq org-tag-alist '(
