@@ -569,12 +569,16 @@ A configuration file to setup spacemacs defaults
     base packages such as =org mode=
 
     #+BEGIN_SRC emacs-lisp
-    better-defaults   ;; emacs mode configuration
-    semantic          ;; parsers and IDE type functions
-    org               ;; of course
-    outshine          ;; org-mode in comments, and org-mode navigation
-    helpful           ;; more detailed help from emacs
-    ibuffer           ;; grouping in the buffer list
+      better-defaults   ;; emacs mode configuration
+      semantic          ;; parsers and IDE type functions
+      (org               ;; of course
+       :variables
+       org-enable-org-journal-support t
+       org-enable-github-support t
+       )
+      outshine          ;; org-mode in comments, and org-mode navigation
+      helpful           ;; more detailed help from emacs
+      ibuffer           ;; grouping in the buffer list
    #+END_SRC
 *** Completions
     [[file:~/.emacs.d/layers/+completion/README.org]]
@@ -961,7 +965,7 @@ A configuration file to setup spacemacs defaults
 
 ***** org journal
       A journal management system using org.  It's enabled in
-      [[file:spacemacs-layers.org::*Emacs tools][Emacs tools layer]]
+     [[*Emacs tools][Emacs tools configuration layer]]
 
       #+BEGIN_SRC emacs-lisp
         (setq org-enable-org-journal-support t)
