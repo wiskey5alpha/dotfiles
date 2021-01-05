@@ -2,17 +2,14 @@
 function edt -d "run the emacsclient"
     ##  a wrapper around the emacsclient with lots of options.
 
+    # {{{
     # TODO: I want to make this easier by hiding all the other options
-    #       behind these function options {{{
+    #       behind these function options
     # - n :: open an new gui frame (default)
     # - c :: open in an active gui frame
     # - t :: open in terminal
-    # - :: connect to stdin
+    # - - :: connect to stdin
     # load any files that were passed in
-    #
-    # with a '-', pipe stdin to emacs
-    # if there are any other options send them to the client unchanged
-    #
     # }}}
 
     # emacsclient options {{{
@@ -36,17 +33,31 @@ function edt -d "run the emacsclient"
     # }}}
 
     set -l emacs "/usr/bin/emacsclient"
-    set -l emacs_options  -a '""'   # make sure to start the server if not already
-    set -l is_running     0       # assume it is not running until tested
-    set -l use_terminal   0       # assume we want to use the gui
+    set -l emacs_options        # build the commandline switches we want to pass to the client
+    set -l additional_options   # filenames and other options not pre-configured
+    set -l daemon_is_running  0 # assume it is not running until tested
+    set -l client_is_running 0  # assume it is not running until tested
+    set -l use_terminal   0     # assume we want to use the gui
 
     # check if emacs server is already running
     if pgrep -U (id -u) -f 'emacs --daemon' > /dev/null
-        set $is_running 1
+        set $daemon_is_running 1
+        echo "DEBUG: the daemon is running"
+    else
+        # '-a' with an empty string tells emacsclient to start the server
+        # and then attach
+        set -a emacs_options -a ""
+        echo "DEBUG: the daemon is not running"
     end
 
-    # We'll need the '-c' if the server isnt running already
-    if test $is_running -eq 1
+    # now check if we have any frames to connect to
+    if test ($emacs -e '(count (visible-frame-list))') -ge 1
+        set $client_is_running 1
+    end
+
+    # We'll need the '-c' if the server or client isnt running already
+    if test $daemon_is_running -eq 0
+        or test $client_is_running -eq 0
         set -a emacs_options "-c"
     end
 
@@ -66,18 +77,25 @@ function edt -d "run the emacsclient"
                     set -a emacs_options "\"(let ((b (generate-new-buffer \"*stdin*\")))"
                     set -a emacs_options "(switch-to-buffer b) (insert-file-contents \"'$TMP'\")"
                     set -a emacs_options "(delete-file \"'$TMP'\"))')\""
+                case "-c"
+                    # we want a new window
+                    set -a emacs_options "-c"
                 case "*"
                     # its either one of the lesser used options, or filenames now
-                    # or maybe it's -c and we want a new window
-                    set -a emacs_options $arg
+                    set -a additional_options $arg
             end
         end
+    else
+        # there were no arguments
+        echo "DEBUG: no arguments found"
     end
+
+
     if test $use_terminal -eq 0
         # we aren't using the terminal so return immediately.
         # so we dont need an '&' at the end
         set -a emacs_options "-n"
     end
-    ##    echo $emacs $emacs_options
-    command $emacs $emacs_options
+    echo "DEBUG: $emacs $emacs_options" $additional_options
+    command $emacs $emacs_options $additional_options
 end
