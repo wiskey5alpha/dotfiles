@@ -1,5 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env fish
+### em :: start emacs using the server and client - terminal mode
+## the real work is done by the [[file:~/.config/fish/functions/edt.fish][edt function]]
+## however, many programs and processes expect to call an executable file in your path
+## such as =git commit=
 
-
-edit -t $*
-
+edt -t $argv
