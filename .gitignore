@@ -25,3 +25,4 @@
 /config/onedrive/refresh_token
 # Ignore any file with LOCAL in the name (good for per-machine vars/functions)
 *LOCAL*
+/link/.fonts/.uuid
