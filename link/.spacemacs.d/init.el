@@ -3,7 +3,7 @@
 ;; Modifications to .spacemacs.d/init.el will be overwritten at next export
 ;; To change any settings:
 ;; 1. Edit the org file
-;;    /home/aldrichtr/.dotfiles/org-source/spacemacs/init.org
+;;    /home/aldrichtr/.tangld/src/spacemacs/init.org
 ;;    with the customizations you want
 ;; 2. tangle - export the file
 ;; 3. restart/reload emacs
@@ -318,7 +318,7 @@
                                         ; set the default directory for some org functionality
 
     (setq org-default-inbox-file (f-join org-directory "pim-inbox.org"))
-    (setq org-default-journal-file (f-join org-directory "jrn-tasks-ideas-notes-and-brainstorming.org"))
+    (setq org-default-journal-file (f-join org-directory "jrn-task-ideas-notes-and-brainstorming.org"))
     (defvar tra:org-file-metatypes
       '(("reference" . "^ref[a-zA-Z0-9-_]*\\.org$") ; Reference information
         ("document"  . "^doc[a-zA-Z0-9-_]*\\.org$") ; Document production
@@ -692,17 +692,30 @@
                    )
                  )
     (add-to-list 'org-publish-project-alist
-                 '("org files"
+                 '("data"
+                   :base-directory "/home/aldrichtr/org/data/"
+                   :base-extension "png"
+                   :recursive t
+                   :publishing-directory "/var/www/www.timforge.local/htdocs/data"
+                   :publishing-function org-publish-attachment
+                   )
+                 )
+    (add-to-list 'org-publish-project-alist
+                 '("org-files"
                    :base-directory "/home/aldrichtr/org/"
                    :base-extension "org"
                    :publishing-directory "/var/www/www.timforge.local/htdocs"
                    :recursive t
                    :makeindex t
                    :auto-sitemap t
-                   :sitemap-filename "default.org"
+                   :sitemap-filename "ref-admn-default.org"
+                   :htmlized-source t
                    :publishing-function org-html-publish-to-html
                    )
                  )
+    (add-to-list 'org-publish-project-alist
+                 '("local-web"
+                   :components ("org-info" "styles" "data" "org-files")))
     (setq org-capture-templates '())
     (add-to-list 'org-capture-templates
                  '("o" "Note" entry
